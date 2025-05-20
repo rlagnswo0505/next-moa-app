@@ -1,17 +1,11 @@
-import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
 import React from 'react';
+import SearchBar from './_component/SearchBar';
 
-const page = () => {
+const Home = () => {
   return (
-    <div>
-      <section>
-        <form className="fixed w-[inherit]">
-          <div className="bg-muted-foreground/10 flex items-center justify-start rounded-full">
-            <Search className="text-muted-foreground absolute top-2 left-2 transform" />
-            <Input className="rounded-full pl-10" name="q" />
-          </div>
-        </form>
+    <div className="flex flex-col gap-4 px-4">
+      <section className="mt-2.5">
+        <SearchBar />
       </section>
       <section></section>
       <section></section>
@@ -20,4 +14,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Home;
