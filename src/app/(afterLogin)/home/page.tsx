@@ -1,5 +1,6 @@
 import React from 'react';
 import SearchBar from './_component/SearchBar';
+import AdBanner from './_component/AdBanner';
 
 const Home = () => {
   return (
@@ -7,7 +8,9 @@ const Home = () => {
       <section className="mt-2.5">
         <SearchBar />
       </section>
-      <section></section>
+      <section>
+        <AdBanner />
+      </section>
       <section></section>
       <section></section>
     </div>
