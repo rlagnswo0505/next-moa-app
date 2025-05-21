@@ -2,9 +2,16 @@
 
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Bell, ShoppingCart } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const Header = () => {
+  const router = useRouter();
+
+  const handleBack = () => {
+    router.back();
+  };
+
   return (
     <header
       className="fixed top-0 left-0
@@ -21,7 +28,7 @@ const Header = () => {
     h-11
   "
     >
-      <Button variant="ghost" size="icon" className="w-11 h-11">
+      <Button variant="ghost" size="icon" className="w-11 h-11" onClick={handleBack} aria-label="뒤로가기">
         <ArrowLeft />
       </Button>
       <h4 className="text-md font-bold">아무거나</h4>

@@ -55,21 +55,51 @@ const allDeals = [
     remainingTime: '112분',
     image: faker.image.url(),
   },
+  {
+    id: 3,
+    store: '스시 마이 강남점',
+    menu: '초밥 세트',
+    category: '일식',
+    discount: '20%',
+    price: 24000,
+    originalPrice: 30000,
+    stock: 15,
+    participated: 45,
+    total: 60,
+    walkTime: 10,
+    distance: '0.6km',
+    remainingTime: '14분',
+    image: faker.image.url(),
+  },
+  {
+    id: 4,
+    store: '스시 마이 강남점',
+    menu: '초밥 세트',
+    category: '일식',
+    discount: '20%',
+    price: 24000,
+    originalPrice: 30000,
+    stock: 15,
+    participated: 45,
+    total: 60,
+    walkTime: 10,
+    distance: '0.6km',
+    remainingTime: '14분',
+    image: faker.image.url(),
+  },
 ];
 
 const Home = () => {
   return (
-    <div className="flex flex-col gap-4 ">
-      <section className="mt-2.5 px-4">
-        <SearchBar />
-      </section>
-      <section className="px-4">
+    <div className="flex flex-col gap-4">
+      <SearchBar />
+      <section className="px-4 mt-14">
         <AdBanner />
       </section>
       <section className="pl-4">
         <HorizonScroll categories={categories} />
       </section>
-      <section className="px-4 pb-15">
+      <section className="px-4 pb-20">
         <h2 className="font-bold text-lg">내 주변 할인 공구</h2>
         <div className="flex items-center justify-between">
           <span className="text-muted-foreground font-bold">

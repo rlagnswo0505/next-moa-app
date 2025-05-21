@@ -34,7 +34,7 @@ const ProductCard = ({ deal }: Props) => {
   const router = useRouter();
 
   const handleMoveDetail = () => {
-    router.push(`/coupon/${deal.id}`);
+    router.replace(`/coupon/${deal.id}`);
   };
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
