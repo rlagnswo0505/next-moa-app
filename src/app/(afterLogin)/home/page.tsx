@@ -4,7 +4,10 @@ import AdBanner from './_component/AdBanner';
 import SearchBar from './_component/SearchBar';
 import HorizonScroll from './_component/HorizonScroll';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+
+import { faker } from '@faker-js/faker';
+
+import ProductCard from './_component/ProductCard';
 
 const categories = [
   { id: 1, name: '전체' },
@@ -17,6 +20,41 @@ const categories = [
   { id: 8, name: '음료' },
   { id: 9, name: '주류' },
   { id: 10, name: '기타' },
+];
+
+const allDeals = [
+  {
+    id: 1,
+    store: '라오니 피자 강남점',
+    menu: '콤비네이션 L 세트',
+    category: '일식',
+    discount: '20%',
+    price: 24000,
+    originalPrice: 30000,
+    stock: 15,
+    participated: 45,
+    total: 60,
+    walkTime: 10,
+    distance: '0.6km',
+    remainingTime: '14분',
+    image: faker.image.url(),
+  },
+  {
+    id: 2,
+    store: '엄마 밥상 강남점',
+    menu: '비빔밥 정식',
+    category: '한식',
+    discount: '20%',
+    price: 8000,
+    originalPrice: 10000,
+    stock: 15,
+    participated: 45,
+    total: 60,
+    walkTime: 10,
+    distance: '0.6km',
+    remainingTime: '112분',
+    image: faker.image.url(),
+  },
 ];
 
 const Home = () => {
@@ -38,10 +76,10 @@ const Home = () => {
             <strong className="text-moa">30</strong>
             개의 공구
           </span>
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">정렬기준</span>
+          <div className="flex items-center gap-2 mt-2">
+            <span className="text-muted-foreground text-sm">정렬기준</span>
             <Select defaultValue="apple">
-              <SelectTrigger className="w-fit min-w-[100px] border-none shadow-none font-bold">
+              <SelectTrigger className="w-fit min-w-[100px] border-none shadow-none font-bold cursor-pointer">
                 <SelectValue placeholder="정렬기준" />
               </SelectTrigger>
               <SelectContent side="bottom" align="end">
@@ -55,13 +93,10 @@ const Home = () => {
             </Select>
           </div>
         </div>
-        <div className="flex gap-4 mt-4">
-          <Card className="w-full h-40 rounded-lg mt-4">
-            <CardHeader></CardHeader>
-            <CardContent></CardContent>
-            <CardFooter></CardFooter>
-          </Card>
-          <Card className="w-full h-40 rounded-lg mt-4"></Card>
+        <div className="grid gap-4 grid-cols-2">
+          {allDeals.map((deal) => (
+            <ProductCard key={deal.id} deal={deal} />
+          ))}
         </div>
       </section>
     </div>
