@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Bell, ShoppingCart } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -33,10 +34,11 @@ const Header = () => {
       </Button>
       <h4 className="text-md font-bold">아무거나</h4>
       <div>
-        <Button variant="ghost" size="icon" className="relative w-11 h-11">
-          <ShoppingCart />
-          <span
-            className="absolute
+        <Button variant="ghost" size="icon" className="relative w-11 h-11" asChild>
+          <Link href="/cart">
+            <ShoppingCart />
+            <span
+              className="absolute
             top-1
             right-1
             w-4
@@ -48,9 +50,10 @@ const Header = () => {
             flex
             items-center
             justify-center"
-          >
-            1
-          </span>
+            >
+              1
+            </span>
+          </Link>
         </Button>
         <Button variant="ghost" size="icon" className="relative w-11 h-11">
           <Bell />
