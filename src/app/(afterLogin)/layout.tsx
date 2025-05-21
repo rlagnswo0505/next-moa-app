@@ -11,7 +11,7 @@ const AfterLoginLayout = ({ children }: Props) => {
     <>
       <section className="max-w-[600px] mx-auto">
         <Header />
-        {children}
+        <div className="pt-11">{children}</div>
       </section>
       <Footer />
     </>
