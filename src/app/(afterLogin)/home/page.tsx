@@ -22,7 +22,7 @@ const categories = [
   { id: 10, name: '기타' },
 ];
 
-const allDeals = [
+export const allDeals = [
   {
     id: 1,
     store: '라오니 피자 강남점',
