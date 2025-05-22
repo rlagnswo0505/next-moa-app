@@ -16,6 +16,10 @@ type Props = {
 const AddCartDrawer = ({ open, handleChange, drawerItem, handleIncrease, handleDecrease }: Props) => {
   const { addToCart } = useCartStore((state: any) => state);
 
+  const totalOriginalPrice = drawerItem?.originalPrice * drawerItem?.quantity;
+
+  const totalPrice = drawerItem?.price * drawerItem?.quantity;
+
   const handleAddToCart = () => {
     if (drawerItem) {
       addToCart(drawerItem);
@@ -51,14 +55,14 @@ const AddCartDrawer = ({ open, handleChange, drawerItem, handleIncrease, handleD
                     <Image src={drawerItem.image} alt={drawerItem.menu} width={80} height={80} className="object-cover relative rounded-md w-full h-full" />
                   </div>
                   <div>
-                    <h4 className="text-xl">[{drawerItem.store}]</h4>
-                    <h4 className="text-xl">{drawerItem.menu}</h4>
+                    <h4 className="text-lg">[{drawerItem.store}]</h4>
+                    <h4 className="text-lg">{drawerItem.menu}</h4>
                   </div>
                 </section>
                 <section className="flex items-start justify-between border-y py-2 mt-2">
                   <div>
-                    <span className="text-muted-foreground line-through">{drawerItem.originalPrice?.toLocaleString()}원</span>
-                    <h4 className="text-xl font-bold">{drawerItem.price?.toLocaleString()}원</h4>
+                    <span className="text-muted-foreground line-through">{totalOriginalPrice?.toLocaleString()}원</span>
+                    <h4 className="text-xl font-bold">{totalPrice?.toLocaleString()}원</h4>
                   </div>
                   <div>
                     <CounterButton cartItem={drawerItem} handleIncrease={handleIncrease} handleDecrese={handleDecrease} />

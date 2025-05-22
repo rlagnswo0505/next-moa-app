@@ -14,7 +14,7 @@ type Props = {
 
 const CounterButton = ({ cartItem, handleIncrease, handleDecrese }: Props) => {
   return (
-    <div className="flex items-center justify-between gap-2 border rounded-md p-1 w-40">
+    <div className="flex items-center justify-between gap-2 border rounded-md p-1 w-24">
       <Button variant={'ghost'} size={'icon'} className="w-6 h-6 [&_svg:not([class*='size-'])]:size-4" onClick={handleDecrese} disabled={cartItem.quantity <= 1}>
         <Minus />
       </Button>
@@ -25,7 +25,7 @@ const CounterButton = ({ cartItem, handleIncrease, handleDecrese }: Props) => {
         className="w-6 h-6
                   [&_svg:not([class*='size-'])]:size-4"
         onClick={handleIncrease}
-        disabled={cartItem.quantity >= 99}
+        disabled={cartItem.quantity >= 20}
       >
         <Plus />
       </Button>

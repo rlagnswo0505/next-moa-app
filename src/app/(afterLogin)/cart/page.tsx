@@ -9,15 +9,27 @@ import PointSection from './_component/PointSection';
 import CartItem from './_component/CartItem';
 import TotalPriceSection from './_component/TotalPriceSection';
 import useCartStore from '@/store/cart';
+import { CartItem as ICartItem } from '@/model/CartItem';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const Cart = () => {
   const { cartItems } = useCartStore((state: any) => state);
 
-  // 총 할인전 금액
-  const [totalPrice, setTotalPrice] = useState(0);
+  // 총 할인전 금액 cartItem 의 price * quantity
+  const totalOriginalPrice = cartItems.reduce((acc: number, cartItem: ICartItem) => {
+    return acc + cartItem.originalPrice * cartItem.quantity;
+  }, 0);
 
-  // 총 할인 금액
-  const [totalDiscount, setTotalDiscount] = useState(0);
+  // 총 할인된 금액
+  const totalPrice = cartItems.reduce((acc: number, cartItem: ICartItem) => {
+    return acc + cartItem.price * cartItem.quantity;
+  }, 0);
+
+  // 총 할인 금액 cartItem 의 discount * quantity
+  const totalDiscount = cartItems.reduce((acc: number, cartItem: any) => {
+    return acc + (cartItem.originalPrice - cartItem.price) * cartItem.quantity;
+  }, 0);
 
   // 적립금 사용 금액
   const [discountPoint, setDiscountPoint] = useState(0);
@@ -43,19 +55,23 @@ const Cart = () => {
     setDiscountPoint(0);
   };
 
-  useEffect(() => {
-    const total = cartItems.reduce((acc, deal) => acc + deal.price, 0);
-    const discount = cartItems.reduce((acc, deal) => acc + deal.originalPrice - deal.price, 0);
-
-    setTotalPrice(total);
-    setTotalDiscount(discount);
-  }, []);
-
   // 총 주문 금액
-  const finalPrice = totalPrice - totalDiscount - discountPoint;
+  const finalPrice = totalPrice - discountPoint;
 
   // 보유 포인트에서 사용한 포인트를 뺀 값
   const totalPoint = defaultPoint - discountPoint;
+
+  if (cartItems.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-screen gap-4">
+        <h1 className="text-2xl font-bold">장바구니가 비어있습니다.</h1>
+        <p className="text-sm text-muted-foreground">식권을 담아보세요!</p>
+        <Button asChild size="lg" className="rounded-full ">
+          <Link href="/home">식권 보러 가기</Link>
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4 bg-gray-200">
@@ -76,7 +92,7 @@ const Cart = () => {
         </Card>
       </section>
       <PointSection totalPoint={totalPoint} discountPoint={discountPoint} defaultPoint={defaultPoint} onChangeDiscountPoint={onChangeDiscountPoint} handleDiscountPointCancel={handleDiscountPointCancel} />
-      <TotalPriceSection totalPrice={totalPrice} totalDiscount={totalDiscount} totalPoint={totalPoint} finalPrice={finalPrice} />
+      <TotalPriceSection totalOriginalPrice={totalOriginalPrice} totalDiscount={totalDiscount} discountPoint={discountPoint} finalPrice={finalPrice} />
       <CartFooter />
     </div>
   );

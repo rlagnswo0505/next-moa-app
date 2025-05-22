@@ -4,10 +4,45 @@ import { Button } from '@/components/ui/button';
 import useCartStore from '@/store/cart';
 import { ArrowLeft, Bell, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSelectedLayoutSegment } from 'next/navigation';
 import React from 'react';
 
+const pages = [
+  {
+    title: '',
+    param: 'home',
+  },
+  {
+    title: '장바구니',
+    param: 'cart',
+  },
+  {
+    title: '주문하기',
+    param: 'order',
+  },
+  {
+    title: '결제하기',
+    param: 'payment',
+  },
+  {
+    title: '식사권',
+    param: 'coupon',
+  },
+  {
+    title: '검색',
+    param: 'search',
+  },
+  {
+    title: '마이페이지',
+    param: 'my-page',
+  },
+];
+
 const Header = () => {
+  const params = useSelectedLayoutSegment();
+
+  const pageTitle = pages.find((page) => page.param === params)?.title;
+
   const router = useRouter();
 
   const { cartItems } = useCartStore((state: any) => state);
@@ -33,11 +68,17 @@ const Header = () => {
   "
     >
       <div className="flex items-center w-22">
-        <Button variant="ghost" size="icon" className="w-11 h-11" onClick={handleBack} aria-label="뒤로가기">
-          <ArrowLeft />
-        </Button>
+        {params === 'home' ? (
+          <Button variant={'ghost'} className="font-bold">
+            모아
+          </Button>
+        ) : (
+          <Button variant="ghost" size="icon" className="w-11 h-11" onClick={handleBack} aria-label="뒤로가기">
+            <ArrowLeft />
+          </Button>
+        )}
       </div>
-      <h4 className="text-md font-bold">아무거나</h4>
+      <h4 className="text-md font-bold">{pageTitle}</h4>
       <div className="flex items-center">
         <Button variant="ghost" size="icon" className="relative w-11 h-11" asChild>
           <Link href="/cart">

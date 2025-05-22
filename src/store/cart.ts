@@ -10,7 +10,7 @@ interface CartStore {
   removeFromCart: (id: number) => void;
   toggleChecked: (id: number) => void;
   allToggleChecked: (checked: boolean) => void;
-  clearCart: () => void;
+  removeCheckedItems: () => void;
 }
 
 const useCartStore = create(
@@ -94,13 +94,13 @@ const useCartStore = create(
         })),
 
       /**
-       * 장바구니 비우기
+       * checked 된 상품들 모두 삭제
        * @returns void
        * @description 장바구니에 담긴 모든 상품을 비웁니다.
        */
-      clearCart: () =>
-        set(() => ({
-          cartItems: [],
+      removeCheckedItems: () =>
+        set((state: any) => ({
+          cartItems: state.cartItems.filter((item: CartItem) => !item.checked),
         })),
     }),
     {

@@ -151,7 +151,7 @@ const Home = () => {
           <div className="flex items-center gap-2 mt-2">
             <span className="text-muted-foreground text-sm">정렬기준</span>
             <Select defaultValue="apple">
-              <SelectTrigger className="w-fit min-w-[100px] border-none shadow-none font-bold cursor-pointer">
+              <SelectTrigger className="w-fit min-w-[100px] border-none shadow-none font-bold cursor-pointer" size="sm">
                 <SelectValue placeholder="정렬기준" />
               </SelectTrigger>
               <SelectContent side="bottom" align="end">
@@ -165,7 +165,7 @@ const Home = () => {
             </Select>
           </div>
         </div>
-        <div className="grid gap-4 grid-cols-2">
+        <div className="grid gap-4 grid-cols-2 mt-2">
           {allCoupons.map((coupon: Coupon) => (
             <ProductCard key={coupon.id} coupon={coupon} handleOpen={handleOpen} addDrawerItem={addDrawerItem} />
           ))}

@@ -12,7 +12,7 @@ type Props = {
 };
 
 const CartItem = ({ cartItem }: Props) => {
-  const { addToCart, decreaseQuantity } = useCartStore((state: any) => state);
+  const { addToCart, decreaseQuantity, toggleChecked, removeFromCart } = useCartStore((state: any) => state);
 
   const handleAddToCart = () => {
     addToCart(cartItem);
@@ -22,27 +22,39 @@ const CartItem = ({ cartItem }: Props) => {
     decreaseQuantity(cartItem.id);
   };
 
+  const handleRemoveItem = () => {
+    confirm('정말 삭제하시겠습니까?') && removeFromCart(cartItem.id);
+  };
+
+  const totalItemPrice = cartItem.price * cartItem.quantity;
+  const totalItemOriginalPrice = cartItem.originalPrice * cartItem.quantity;
+  0;
   return (
     <div key={cartItem?.id} className="flex items-start justify-between gap-4 px-4">
-      <Checkbox id="terms" />
+      <Checkbox id={cartItem?.id.toString()} checked={cartItem?.checked} onCheckedChange={() => toggleChecked(cartItem.id)} className="w-5 h-5" />
       <div className="flex-1">
         <div className="flex items-start gap-4">
-          <div className="w-20 h-20 relative overflow-hidden rounded-lg">
+          <div className="w-16 h-16 relative overflow-hidden rounded-lg">
             <Image src={cartItem?.image} alt={cartItem?.menu} fill className="object-cover" />
           </div>
-          <div className="flex-1 flex flex-col gap-1">
-            <h4 className="font-bold">{cartItem.menu}</h4>
-            <p className="font-bold text-muted-foreground">{cartItem.store}</p>
-            <div className="flex items-center justify-between">
+          <div className="flex-1 flex flex-col gap-2">
+            <div className="flex items-start justify-between">
+              <h4 className="font-bold">{cartItem.menu}</h4>
+              <Button variant="ghost" size="icon" className="w-6 h-6" onClick={handleRemoveItem}>
+                <X />
+              </Button>
+            </div>
+            <p className="font-bold text-muteds-foreground">{cartItem.store}</p>
+            <div className="flex items-center justify-between mt-2">
               <CounterButton cartItem={cartItem} handleIncrease={handleAddToCart} handleDecrese={handleDecreaseQuantity} />
-              <span className="text-moa font-bold">{cartItem.price?.toLocaleString()}원</span>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground line-through">{totalItemOriginalPrice?.toLocaleString()}원</span>
+                <span className="text-moa font-bold">{totalItemPrice?.toLocaleString()}원</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <Button variant="ghost" size="icon">
-        <X />
-      </Button>
     </div>
   );
 };
