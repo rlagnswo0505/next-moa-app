@@ -35,8 +35,12 @@ const useCartStore = create(
               cartItems: state.cartItems.map((cartItem: CartItem) => (cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem)),
             };
           }
+
+          // 수량이 없으면 1로 설정 있으면 그대로 사용
+          const quantity = item.quantity || 1;
+
           // 장바구니에 없는 상품이면 새로 추가
-          return { cartItems: [...state.cartItems, { ...item, quantity: 1, checked: true }] };
+          return { cartItems: [...state.cartItems, { ...item, quantity, checked: true }] };
         }),
 
       /**

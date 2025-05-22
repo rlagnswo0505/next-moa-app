@@ -5,16 +5,14 @@ import AdBanner from './_component/AdBanner';
 
 import SearchBar from './_component/SearchBar';
 import HorizonScroll from './_component/HorizonScroll';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { faker } from '@faker-js/faker';
 
 import ProductCard from './_component/ProductCard';
-import { Button } from '@/components/ui/button';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, DrawerClose } from '@/components/ui/drawer';
+
 import { Coupon } from '@/model/Coupon';
-import Image from 'next/image';
-import CounterButton from '../cart/_component/CounterButton';
+import AddCartDrawer from './_component/AddCartDrawer';
 
 const categories = [
   { id: 1, name: '전체' },
@@ -97,7 +95,8 @@ export const allCoupons = [
 ];
 
 type DrawerItem = Coupon & {
-  count: number;
+  quantity: number;
+  checked: boolean;
 };
 
 const Home = () => {
@@ -107,11 +106,30 @@ const Home = () => {
 
   const handleOpen = () => {
     setOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const handleChange = (e: boolean) => {
+    setOpen(e);
+    if (!e) {
+      document.body.style.overflow = 'auto';
+    }
   };
 
   const addDrawerItem = (item: Coupon) => {
-    const addCountItem = { ...item, count: 1 };
+    const addCountItem = { ...item, quantity: 1, checked: true };
     setDrawerItem(addCountItem);
+  };
+  const handleIncrease = () => {
+    if (drawerItem) {
+      setDrawerItem({ ...drawerItem, quantity: drawerItem.quantity + 1 });
+    }
+  };
+
+  const handleDecrease = () => {
+    if (drawerItem && drawerItem.quantity > 1) {
+      setDrawerItem({ ...drawerItem, quantity: drawerItem.quantity - 1 });
+    }
   };
 
   return (
@@ -153,63 +171,7 @@ const Home = () => {
           ))}
         </div>
       </section>
-      <Drawer open={open} onOpenChange={() => setOpen(!open)}>
-        <DrawerContent>
-          <div className="mx-auto w-full max-w-[600px]">
-            <DrawerHeader>
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a fruit" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Fruits</SelectLabel>
-                    <SelectItem value="apple">Apple</SelectItem>
-                    <SelectItem value="banana">Banana</SelectItem>
-                    <SelectItem value="blueberry">Blueberry</SelectItem>
-                    <SelectItem value="grapes">Grapes</SelectItem>
-                    <SelectItem value="pineapple">Pineapple</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </DrawerHeader>
-            {drawerItem ? (
-              <div className="p-4">
-                <div className="h-[160px]">
-                  <div className="flex items-start gap-4">
-                    <div className="min-w-20 min-h-20 w-20 h-20 rounded-md overflow-hidden">
-                      <Image src={drawerItem.image} alt={drawerItem.menu} width={80} height={80} className="object-cover relative rounded-md" />
-                    </div>
-                    <div>
-                      <h4 className="text-xl">[{drawerItem.store}]</h4>
-                      <h4 className="text-xl">{drawerItem.menu}</h4>
-                    </div>
-                  </div>
-                  <div className="flex items-start justify-between border-y py-2 mt-2">
-                    <div>
-                      <span className="text-muted-foreground line-through">{drawerItem.originalPrice?.toLocaleString()}원</span>
-                      <h4 className="text-xl font-bold">{drawerItem.price?.toLocaleString()}원</h4>
-                    </div>
-                    <div>
-                      <CounterButton cartItem={drawerItem} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div>
-                <h4 className="text-center text-muted-foreground">장바구니에 담긴 상품이 없습니다.</h4>
-                <p className="text-center text-muted-foreground">상품을 선택하여 장바구니에 담아보세요.</p>
-              </div>
-            )}
-            <DrawerFooter>
-              <Button size={'lg'} className="rounded-full h-12">
-                장바구니 담기
-              </Button>
-            </DrawerFooter>
-          </div>
-        </DrawerContent>
-      </Drawer>
+      <AddCartDrawer open={open} handleChange={handleChange} drawerItem={drawerItem} handleIncrease={handleIncrease} handleDecrease={handleDecrease} />
     </div>
   );
 };

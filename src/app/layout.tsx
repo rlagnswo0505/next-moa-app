@@ -39,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="kr" className={`${pretendard.variable}`}>
       <body className={`${geistSans.variable} ${geistMono.variable} ${pretendard.className} antialiased`}>
-        <main className="bg-gray-200 mx-auto min-h-screen max-w-screen">
+        <main className="bg-gray-200 min-h-screen">
           <section className="max-w-[600px] mx-auto bg-white min-h-[inherit]">{children}</section>
         </main>
       </body>

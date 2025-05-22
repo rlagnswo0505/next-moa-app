@@ -5,12 +5,23 @@ import { X } from 'lucide-react';
 import Image from 'next/image';
 import CounterButton from './CounterButton';
 import { CartItem as ICartItem } from '@/model/CartItem';
+import useCartStore from '@/store/cart';
 
 type Props = {
   cartItem: ICartItem;
 };
 
 const CartItem = ({ cartItem }: Props) => {
+  const { addToCart, decreaseQuantity } = useCartStore((state: any) => state);
+
+  const handleAddToCart = () => {
+    addToCart(cartItem);
+  };
+
+  const handleDecreaseQuantity = () => {
+    decreaseQuantity(cartItem.id);
+  };
+
   return (
     <div key={cartItem?.id} className="flex items-start justify-between gap-4 px-4">
       <Checkbox id="terms" />
@@ -23,7 +34,7 @@ const CartItem = ({ cartItem }: Props) => {
             <h4 className="font-bold">{cartItem.menu}</h4>
             <p className="font-bold text-muted-foreground">{cartItem.store}</p>
             <div className="flex items-center justify-between">
-              <CounterButton cartItem={cartItem} />
+              <CounterButton cartItem={cartItem} handleIncrease={handleAddToCart} handleDecrese={handleDecreaseQuantity} />
               <span className="text-moa font-bold">{cartItem.price?.toLocaleString()}원</span>
             </div>
           </div>

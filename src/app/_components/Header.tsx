@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import useCartStore from '@/store/cart';
 import { ArrowLeft, Bell, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -8,6 +9,8 @@ import React from 'react';
 
 const Header = () => {
   const router = useRouter();
+
+  const { cartItems } = useCartStore((state: any) => state);
 
   const handleBack = () => {
     router.back();
@@ -39,8 +42,9 @@ const Header = () => {
         <Button variant="ghost" size="icon" className="relative w-11 h-11" asChild>
           <Link href="/cart">
             <ShoppingCart />
-            <span
-              className="absolute
+            {cartItems.length > 0 && (
+              <span
+                className="absolute
             top-1
             right-1
             w-4
@@ -52,9 +56,10 @@ const Header = () => {
             flex
             items-center
             justify-center"
-            >
-              1
-            </span>
+              >
+                {cartItems.length}
+              </span>
+            )}
           </Link>
         </Button>
         <Button variant="ghost" size="icon" className="relative w-11 h-11">
