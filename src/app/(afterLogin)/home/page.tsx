@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import AdBanner from './_component/AdBanner';
 
 import SearchBar from './_component/SearchBar';
@@ -8,6 +10,11 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { faker } from '@faker-js/faker';
 
 import ProductCard from './_component/ProductCard';
+import { Button } from '@/components/ui/button';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, DrawerClose } from '@/components/ui/drawer';
+import { Coupon } from '@/model/Coupon';
+import Image from 'next/image';
+import CounterButton from '../cart/_component/CounterButton';
 
 const categories = [
   { id: 1, name: '전체' },
@@ -22,7 +29,7 @@ const categories = [
   { id: 10, name: '기타' },
 ];
 
-export const allDeals = [
+export const allCoupons = [
   {
     id: 1,
     store: '라오니 피자 강남점',
@@ -89,7 +96,24 @@ export const allDeals = [
   },
 ];
 
+type DrawerItem = Coupon & {
+  count: number;
+};
+
 const Home = () => {
+  const [open, setOpen] = useState(false);
+
+  const [drawerItem, setDrawerItem] = useState<DrawerItem | null>(null);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const addDrawerItem = (item: Coupon) => {
+    const addCountItem = { ...item, count: 1 };
+    setDrawerItem(addCountItem);
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <SearchBar />
@@ -124,11 +148,68 @@ const Home = () => {
           </div>
         </div>
         <div className="grid gap-4 grid-cols-2">
-          {allDeals.map((deal) => (
-            <ProductCard key={deal.id} deal={deal} />
+          {allCoupons.map((coupon: Coupon) => (
+            <ProductCard key={coupon.id} coupon={coupon} handleOpen={handleOpen} addDrawerItem={addDrawerItem} />
           ))}
         </div>
       </section>
+      <Drawer open={open} onOpenChange={() => setOpen(!open)}>
+        <DrawerContent>
+          <div className="mx-auto w-full max-w-[600px]">
+            <DrawerHeader>
+              <Select>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a fruit" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Fruits</SelectLabel>
+                    <SelectItem value="apple">Apple</SelectItem>
+                    <SelectItem value="banana">Banana</SelectItem>
+                    <SelectItem value="blueberry">Blueberry</SelectItem>
+                    <SelectItem value="grapes">Grapes</SelectItem>
+                    <SelectItem value="pineapple">Pineapple</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </DrawerHeader>
+            {drawerItem ? (
+              <div className="p-4">
+                <div className="h-[160px]">
+                  <div className="flex items-start gap-4">
+                    <div className="min-w-20 min-h-20 w-20 h-20 rounded-md overflow-hidden">
+                      <Image src={drawerItem.image} alt={drawerItem.menu} width={80} height={80} className="object-cover relative rounded-md" />
+                    </div>
+                    <div>
+                      <h4 className="text-xl">[{drawerItem.store}]</h4>
+                      <h4 className="text-xl">{drawerItem.menu}</h4>
+                    </div>
+                  </div>
+                  <div className="flex items-start justify-between border-y py-2 mt-2">
+                    <div>
+                      <span className="text-muted-foreground line-through">{drawerItem.originalPrice?.toLocaleString()}원</span>
+                      <h4 className="text-xl font-bold">{drawerItem.price?.toLocaleString()}원</h4>
+                    </div>
+                    <div>
+                      <CounterButton cartItem={drawerItem} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <h4 className="text-center text-muted-foreground">장바구니에 담긴 상품이 없습니다.</h4>
+                <p className="text-center text-muted-foreground">상품을 선택하여 장바구니에 담아보세요.</p>
+              </div>
+            )}
+            <DrawerFooter>
+              <Button size={'lg'} className="rounded-full h-12">
+                장바구니 담기
+              </Button>
+            </DrawerFooter>
+          </div>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 };

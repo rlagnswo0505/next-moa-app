@@ -29,11 +29,13 @@ const Header = () => {
     h-11
   "
     >
-      <Button variant="ghost" size="icon" className="w-11 h-11" onClick={handleBack} aria-label="뒤로가기">
-        <ArrowLeft />
-      </Button>
+      <div className="flex items-center w-22">
+        <Button variant="ghost" size="icon" className="w-11 h-11" onClick={handleBack} aria-label="뒤로가기">
+          <ArrowLeft />
+        </Button>
+      </div>
       <h4 className="text-md font-bold">아무거나</h4>
-      <div>
+      <div className="flex items-center">
         <Button variant="ghost" size="icon" className="relative w-11 h-11" asChild>
           <Link href="/cart">
             <ShoppingCart />
