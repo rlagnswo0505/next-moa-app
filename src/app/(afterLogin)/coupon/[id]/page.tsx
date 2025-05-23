@@ -1,18 +1,14 @@
 'use client';
 
+import { use } from 'react';
 import React from 'react';
 import { allCoupons } from '../../home/page';
 
 import Image from 'next/image';
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
-
-const page = ({ params }: Props) => {
-  const { id } = params;
+type Params = Promise<{ id: string }>;
+const page = ({ params }: { params: Params }) => {
+  const id = use(params);
 
   console.log('id', id);
 
