@@ -2,9 +2,9 @@
 
 import { use } from 'react';
 import React from 'react';
-import { allCoupons } from '../../home/page';
 
 import Image from 'next/image';
+import { allCoupons } from '@/_data/allCoupon';
 
 type Params = Promise<{ id: string }>;
 const page = ({ params }: { params: Params }) => {

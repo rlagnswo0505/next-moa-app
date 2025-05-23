@@ -14,3 +14,5 @@ export type Coupon = {
   remainingTime: string;
   image: string;
 };
+
+export type CouponList = Coupon[];
