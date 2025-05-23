@@ -2,12 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
 import useCartStore from '@/store/cart';
-import { Search } from 'lucide-react';
-import React, { useRef } from 'react';
+import React from 'react';
 
-const CartHeader = () => {
+type Props = {
+  handleClickRemoveBtn: () => void;
+};
+
+const CartHeader = ({ handleClickRemoveBtn }: Props) => {
   const { cartItems, allToggleChecked } = useCartStore((state: any) => state);
 
   // 전체 선택 체크박스
@@ -54,8 +56,8 @@ const CartHeader = () => {
           </span>
         </label>
       </div>
-      <Button variant={'ghost'} size={'sm'} className="text-muted-foreground text-xs font-bold">
-        상품삭제
+      <Button variant={'ghost'} size={'sm'} className="text-muted-foreground text-xs font-bold" onClick={handleClickRemoveBtn}>
+        선택삭제
       </Button>
     </section>
   );

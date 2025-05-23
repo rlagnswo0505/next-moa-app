@@ -165,7 +165,7 @@ const Home = () => {
             </Select>
           </div>
         </div>
-        <div className="grid gap-4 grid-cols-2 mt-2">
+        <div className="grid gap-2 grid-cols-2 mt-2">
           {allCoupons.map((coupon: Coupon) => (
             <ProductCard key={coupon.id} coupon={coupon} handleOpen={handleOpen} addDrawerItem={addDrawerItem} />
           ))}

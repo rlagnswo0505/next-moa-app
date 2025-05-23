@@ -30,7 +30,7 @@ const ProductCard = ({ coupon, handleOpen, addDrawerItem }: Props) => {
   };
 
   return (
-    <Card key={coupon.id} className="w-full rounded-lg border-none gap-2 py-2 group cursor-pointer" onClick={handleMoveDetail}>
+    <Card key={coupon.id} className="w-full rounded-lg border-none gap-2 py-1 group cursor-pointer" onClick={handleMoveDetail}>
       <CardHeader className="border-b p-2">
         <div className="w-full h-45 relative rounded-lg overflow-hidden">
           <Image

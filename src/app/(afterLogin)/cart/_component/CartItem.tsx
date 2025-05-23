@@ -9,9 +9,10 @@ import useCartStore from '@/store/cart';
 
 type Props = {
   cartItem: ICartItem;
+  handleClickRemoveBtn: () => void;
 };
 
-const CartItem = ({ cartItem }: Props) => {
+const CartItem = ({ cartItem, handleClickRemoveBtn }: Props) => {
   const { addToCart, decreaseQuantity, toggleChecked, removeFromCart } = useCartStore((state: any) => state);
 
   const handleAddToCart = () => {
@@ -20,10 +21,6 @@ const CartItem = ({ cartItem }: Props) => {
 
   const handleDecreaseQuantity = () => {
     decreaseQuantity(cartItem.id);
-  };
-
-  const handleRemoveItem = () => {
-    confirm('정말 삭제하시겠습니까?') && removeFromCart(cartItem.id);
   };
 
   const totalItemPrice = cartItem.price * cartItem.quantity;
@@ -40,7 +37,7 @@ const CartItem = ({ cartItem }: Props) => {
           <div className="flex-1 flex flex-col gap-2">
             <div className="flex items-start justify-between">
               <h4 className="font-bold">{cartItem.menu}</h4>
-              <Button variant="ghost" size="icon" className="w-6 h-6" onClick={handleRemoveItem}>
+              <Button variant="ghost" size="icon" className="w-6 h-6" onClick={handleClickRemoveBtn}>
                 <X />
               </Button>
             </div>

@@ -12,9 +12,43 @@ import useCartStore from '@/store/cart';
 import { CartItem as ICartItem } from '@/model/CartItem';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import ConfirmDialog from '@/app/_components/ConfirmDialog';
 
 const Cart = () => {
-  const { cartItems } = useCartStore((state: any) => state);
+  const { cartItems, removeCheckedItems, removeFromCart } = useCartStore((state: any) => state);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMulti, setIsMulti] = useState<'multi' | 'single'>('multi');
+  const [removeId, setRemoveId] = useState<null | number>(null);
+
+  const handleChangeOpen = (e: boolean) => {
+    setIsOpen(e);
+  };
+
+  // 삭제 버튼 클릭 시 실행되는 함수
+  const handleClinkRemoveBtn = (
+    {
+      state = 'multi',
+      id = null,
+    }: {
+      state: 'multi' | 'single';
+      id: number | null;
+    } = { state: 'multi', id: null } // 기본값 설정
+  ) => {
+    setIsOpen(true);
+    setIsMulti(state);
+    setRemoveId(id);
+  };
+
+  // 확인 버튼 클릭 시 실행되는 함수
+  const handleConfirm = () => {
+    if (isMulti === 'multi') {
+      removeCheckedItems();
+    } else {
+      removeId && removeFromCart(removeId);
+    }
+    setIsOpen(false);
+  };
 
   // 총 할인전 금액 cartItem 의 price * quantity
   const totalOriginalPrice = cartItems.reduce((acc: number, cartItem: ICartItem) => {
@@ -75,7 +109,11 @@ const Cart = () => {
 
   return (
     <div className="flex flex-col gap-4 bg-gray-200">
-      <CartHeader />
+      <CartHeader
+        handleClickRemoveBtn={() => {
+          handleClinkRemoveBtn({ state: 'multi', id: null });
+        }}
+      />
       <section className="flex flex-col mt-16">
         <Card className="rounded-sm shadow-none">
           <CardContent
@@ -85,8 +123,8 @@ const Cart = () => {
             [&>*:not(:last-child)]:pb-4
             px-0"
           >
-            {cartItems.map((cartItem) => (
-              <CartItem key={cartItem.id} cartItem={cartItem} />
+            {cartItems.map((cartItem: ICartItem) => (
+              <CartItem key={cartItem.id} cartItem={cartItem} handleClickRemoveBtn={() => handleClinkRemoveBtn({ state: 'single', id: cartItem.id })} />
             ))}
           </CardContent>
         </Card>
@@ -94,6 +132,7 @@ const Cart = () => {
       <PointSection totalPoint={totalPoint} discountPoint={discountPoint} defaultPoint={defaultPoint} onChangeDiscountPoint={onChangeDiscountPoint} handleDiscountPointCancel={handleDiscountPointCancel} />
       <TotalPriceSection totalOriginalPrice={totalOriginalPrice} totalDiscount={totalDiscount} discountPoint={discountPoint} finalPrice={finalPrice} />
       <CartFooter />
+      <ConfirmDialog open={isOpen} onOpenChange={handleChangeOpen} onConfirm={handleConfirm} confirmText={'삭제'} title={'상품을 삭제하시겠어요?'} subTitle={''} />
     </div>
   );
 };
