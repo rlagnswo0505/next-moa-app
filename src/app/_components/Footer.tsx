@@ -10,6 +10,10 @@ const Footer = () => {
 
   console.log('segment', segment);
 
+  if (segment === 'cart') {
+    return null;
+  }
+
   return (
     <footer>
       <nav className="fixed bottom-0 left-0 right-0 bg-white shadow-sm z-50 mx-auto max-w-[600px] border-t">
