@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { user } from '@/_data/user';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 type Params = Promise<{ id: string }>;
 const CouponDetail = ({ params }: { params: Params }) => {
@@ -25,7 +26,7 @@ const CouponDetail = ({ params }: { params: Params }) => {
   return (
     <div
       className="bg-neutral-200 flex flex-col gap-4
-  [&>section]:bg-primary-foreground [&>section]:p-3    
+  [&>section]:bg-primary-foreground    
     "
     >
       <section className="p-3 bg-primary-foreground">
@@ -59,7 +60,7 @@ const CouponDetail = ({ params }: { params: Params }) => {
           <div className="mt-2">서두르세요! 공구 수량이 얼마 남지 않았습니다.</div>
         </div>
       </section>
-      <section>
+      <section className="py-3 pl-3">
         <h4 className="mb-2">{user.nickname}님을 위한 추천 딜</h4>
         <ScrollArea type="hover">
           <div className="flex items-center gap-4">
@@ -80,7 +81,24 @@ const CouponDetail = ({ params }: { params: Params }) => {
           <ScrollBar orientation="horizontal" hidden />
         </ScrollArea>
       </section>
-      <section></section>
+      <section className="p-0">
+        <Tabs defaultValue="menu" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 h-12 sticky top-11">
+            <TabsTrigger value="menu">공구 메뉴</TabsTrigger>
+            <TabsTrigger value="review">리뷰</TabsTrigger>
+            <TabsTrigger value="info">정보</TabsTrigger>
+          </TabsList>
+          <TabsContent value="menu" className="p-3 min-h-dvh">
+            <div>메뉴</div>
+          </TabsContent>
+          <TabsContent value="review" className="p-3 min-h-dvh">
+            <div>리뷰</div>
+          </TabsContent>
+          <TabsContent value="info" className="p-3 min-h-dvh">
+            <div>정보</div>
+          </TabsContent>
+        </Tabs>
+      </section>
     </div>
   );
 };
