@@ -10,6 +10,33 @@ import { Separator } from '@/components/ui/separator';
 import { user } from '@/_data/user';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Ratings } from '@/app/_components/Rating';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { faker } from '@faker-js/faker';
+
+const STAR_RATING = 4.3;
+const REVIEW_COUNT = 1200;
+
+const reviewImages = [
+  {
+    rating: 3.5,
+    content: faker.lorem.sentence(),
+    src: faker.image.url(),
+    alt: faker.commerce.productName(),
+  },
+  {
+    src: faker.image.url(),
+    alt: faker.commerce.productName(),
+  },
+  {
+    src: faker.image.url(),
+    alt: faker.commerce.productName(),
+  },
+  {
+    src: faker.image.url(),
+    alt: faker.commerce.productName(),
+  },
+];
 
 type Params = Promise<{ id: string }>;
 const CouponDetail = ({ params }: { params: Params }) => {
@@ -82,7 +109,7 @@ const CouponDetail = ({ params }: { params: Params }) => {
         </ScrollArea>
       </section>
       <section className="p-0">
-        <Tabs defaultValue="menu" className="w-full">
+        <Tabs defaultValue="menu" className="w-full bg-white">
           <TabsList className="grid w-full grid-cols-3 h-12 sticky top-11">
             <TabsTrigger value="menu">공구 메뉴</TabsTrigger>
             <TabsTrigger value="review">리뷰</TabsTrigger>
@@ -92,7 +119,30 @@ const CouponDetail = ({ params }: { params: Params }) => {
             <div>메뉴</div>
           </TabsContent>
           <TabsContent value="review" className="p-3 min-h-dvh">
-            <div>리뷰</div>
+            <div>
+              <div className="flex items-center gap-2 my-10 justify-center">
+                <Ratings rating={STAR_RATING} variant="yellow" />
+                <div className="text-xl flex">
+                  <strong>{STAR_RATING}</strong>
+                  <div className="flex items-center gap-1 text-muted-foreground/50">
+                    <strong>/ 5</strong>
+                    <span className="text-sm">({REVIEW_COUNT.toLocaleString()})</span>
+                  </div>
+                </div>
+              </div>
+              {/* 이미지 6개 */}
+              <ul className="grid grid-cols-4 gap-2 mt-2">
+                {reviewImages.map((image, index) => (
+                  <li key={index} className={'rounded-lg overflow-hidden cursor-pointer'}>
+                    <AspectRatio ratio={1 / 1}>
+                      <Image fill src={image.src} alt={image.alt} className=" object-cover" />
+                      {index === 3 && <div className="absolute inset-0 bg-black/50 text-white flex items-center justify-center text-lg ">+ 더 보기</div>}
+                    </AspectRatio>
+                  </li>
+                ))}
+              </ul>
+              <div></div>
+            </div>
           </TabsContent>
           <TabsContent value="info" className="p-3 min-h-dvh">
             <div>정보</div>
