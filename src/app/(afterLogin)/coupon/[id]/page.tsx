@@ -65,9 +65,9 @@ const CouponDetail = ({ params }: { params: Params }) => {
         <ScrollArea type="hover">
           <div className="flex items-center gap-4">
             {allCoupons.map((recommendItem) => (
-              <div key={recommendItem.id} className="flex flex-col text-sm">
+              <div key={recommendItem.id} className="flex flex-col text-sm cursor-pointer group">
                 <div className="w-25 h-25 rounded-lg overflow-hidden">
-                  <Image src={recommendItem.image} alt={recommendItem.menu} width={100} height={100} className="object-cover" />
+                  <Image src={recommendItem.image} alt={recommendItem.menu} width={100} height={100} className="object-cover group-hover:scale-110 transition-transform duration-300 ease-in-out" />
                 </div>
                 <h4 className="text-muted-foreground">{recommendItem.store}</h4>
                 <h4 className="font-bold">{recommendItem.menu}</h4>
