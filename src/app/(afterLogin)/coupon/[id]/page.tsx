@@ -8,6 +8,7 @@ import { allCoupons } from '@/_data/allCoupon';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { user } from '@/_data/user';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 type Params = Promise<{ id: string }>;
 const CouponDetail = ({ params }: { params: Params }) => {
@@ -59,7 +60,25 @@ const CouponDetail = ({ params }: { params: Params }) => {
         </div>
       </section>
       <section>
-        <h4>{user.nickname}님을 위한 추천 딜</h4>
+        <h4 className="mb-2">{user.nickname}님을 위한 추천 딜</h4>
+        <ScrollArea type="hover">
+          <div className="flex items-center gap-4">
+            {allCoupons.map((recommendItem) => (
+              <div key={recommendItem.id} className="flex flex-col text-sm">
+                <div className="w-25 h-25 rounded-lg overflow-hidden">
+                  <Image src={recommendItem.image} alt={recommendItem.menu} width={100} height={100} className="object-cover" />
+                </div>
+                <h4 className="text-muted-foreground">{recommendItem.store}</h4>
+                <h4 className="font-bold">{recommendItem.menu}</h4>
+                <div className="flex justify-between items-center">
+                  <span>{recommendItem.price.toLocaleString()}원</span>
+                  <i className="text-moa font-bold">{recommendItem.discount}</i>
+                </div>
+              </div>
+            ))}
+          </div>
+          <ScrollBar orientation="horizontal" hidden />
+        </ScrollArea>
       </section>
       <section></section>
     </div>
