@@ -3,6 +3,9 @@ import { Geist, Geist_Mono, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
 
 import './globals.css';
+import Script from 'next/script';
+
+const APP_KEY = process.env.NEXT_PUBLIC_NAVER_APP_KEY;
 
 const pretendard = localFont({
   src: './fonts/pretendard/PretendardVariable.woff2',
@@ -38,6 +41,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="kr" className={`${pretendard.variable}`}>
+      <Script
+        strategy="afterInteractive"
+        // https 와 http 모두 지원
+        src={`http://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${APP_KEY}`}
+      ></Script>
       <body className={`${geistSans.variable} ${geistMono.variable} ${pretendard.className} antialiased`}>
         <main className="bg-gray-200 min-h-screen">
           <section className="max-w-[600px] mx-auto bg-white min-h-[inherit]">{children}</section>

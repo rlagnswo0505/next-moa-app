@@ -7,42 +7,17 @@ import Image from 'next/image';
 import { allCoupons } from '@/_data/allCoupon';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { user } from '@/_data/user';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Ratings } from '@/app/_components/Rating';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { faker } from '@faker-js/faker';
-
-const STAR_RATING = 4.3;
-const REVIEW_COUNT = 1200;
-
-const reviewImages = [
-  {
-    rating: 3.5,
-    content: faker.lorem.sentence(),
-    src: faker.image.url(),
-    alt: faker.commerce.productName(),
-  },
-  {
-    src: faker.image.url(),
-    alt: faker.commerce.productName(),
-  },
-  {
-    src: faker.image.url(),
-    alt: faker.commerce.productName(),
-  },
-  {
-    src: faker.image.url(),
-    alt: faker.commerce.productName(),
-  },
-];
+import InfoTab from './_component/InfoTab';
+import MenuTab from './_component/MenuTab';
+import ReviewTab from './_component/ReviewTab';
+import RecommendSection from './_component/RecommendSection';
+import AddCartFooter from '@/app/_components/AddCartFooter';
 
 type Params = Promise<{ id: string }>;
 const CouponDetail = ({ params }: { params: Params }) => {
   const { id } = use(params);
-
-  console.log('id', id);
 
   const coupon = allCoupons?.find((item: any) => item.id === Number(id));
 
@@ -87,68 +62,26 @@ const CouponDetail = ({ params }: { params: Params }) => {
           <div className="mt-2">서두르세요! 공구 수량이 얼마 남지 않았습니다.</div>
         </div>
       </section>
-      <section className="py-3 pl-3">
-        <h4 className="mb-2">{user.nickname}님을 위한 추천 딜</h4>
-        <ScrollArea type="hover">
-          <div className="flex items-center gap-4">
-            {allCoupons.map((recommendItem) => (
-              <div key={recommendItem.id} className="flex flex-col text-sm cursor-pointer group">
-                <div className="w-25 h-25 rounded-lg overflow-hidden">
-                  <Image src={recommendItem.image} alt={recommendItem.menu} width={100} height={100} className="object-cover group-hover:scale-110 transition-transform duration-300 ease-in-out" />
-                </div>
-                <h4 className="text-muted-foreground">{recommendItem.store}</h4>
-                <h4 className="font-bold">{recommendItem.menu}</h4>
-                <div className="flex justify-between items-center">
-                  <span>{recommendItem.price.toLocaleString()}원</span>
-                  <i className="text-moa font-bold">{recommendItem.discount}</i>
-                </div>
-              </div>
-            ))}
-          </div>
-          <ScrollBar orientation="horizontal" hidden />
-        </ScrollArea>
-      </section>
+      <RecommendSection />
       <section className="p-0">
-        <Tabs defaultValue="menu" className="w-full bg-white">
-          <TabsList className="grid w-full grid-cols-3 h-12 sticky top-11">
+        <Tabs defaultValue="menu" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 h-12 sticky top-11 bg-primary-foreground z-10">
             <TabsTrigger value="menu">공구 메뉴</TabsTrigger>
             <TabsTrigger value="review">리뷰</TabsTrigger>
             <TabsTrigger value="info">정보</TabsTrigger>
           </TabsList>
-          <TabsContent value="menu" className="p-3 min-h-dvh">
-            <div>메뉴</div>
+          <TabsContent value="menu" className="p-3  pb-11">
+            <MenuTab />
           </TabsContent>
-          <TabsContent value="review" className="p-3 min-h-dvh">
-            <div>
-              <div className="flex items-center gap-2 my-10 justify-center">
-                <Ratings rating={STAR_RATING} variant="yellow" />
-                <div className="text-xl flex">
-                  <strong>{STAR_RATING}</strong>
-                  <div className="flex items-center gap-1 text-muted-foreground/50">
-                    <strong>/ 5</strong>
-                    <span className="text-sm">({REVIEW_COUNT.toLocaleString()})</span>
-                  </div>
-                </div>
-              </div>
-              {/* 이미지 6개 */}
-              <ul className="grid grid-cols-4 gap-2 mt-2">
-                {reviewImages.map((image, index) => (
-                  <li key={index} className={'rounded-lg overflow-hidden cursor-pointer'}>
-                    <AspectRatio ratio={1 / 1}>
-                      <Image fill src={image.src} alt={image.alt} className=" object-cover" />
-                      {index === 3 && <div className="absolute inset-0 bg-black/50 text-white flex items-center justify-center text-lg ">+ 더 보기</div>}
-                    </AspectRatio>
-                  </li>
-                ))}
-              </ul>
-              <div></div>
-            </div>
+          <TabsContent value="review" className="p-3  pb-11">
+            <ReviewTab />
           </TabsContent>
-          <TabsContent value="info" className="p-3 min-h-dvh">
-            <div>정보</div>
+          <TabsContent value="info" className="p-3  pb-11">
+            <InfoTab />
           </TabsContent>
         </Tabs>
       </section>
+      <AddCartFooter coupon={coupon} />
     </div>
   );
 };

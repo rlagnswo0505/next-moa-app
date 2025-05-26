@@ -7,13 +7,12 @@ import SearchBar from './_component/SearchBar';
 import HorizonScroll from './_component/HorizonScroll';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-import { faker } from '@faker-js/faker';
-
 import ProductCard from './_component/ProductCard';
 
-import { Coupon } from '@/model/Coupon';
-import AddCartDrawer from './_component/AddCartDrawer';
+import { Coupon, DrawerItem } from '@/model/Coupon';
+
 import { allCoupons } from '@/_data/allCoupon';
+import AddCartDrawer from '@/app/_components/AddCartDrawer';
 
 const categories = [
   { id: 1, name: '전체' },
@@ -28,42 +27,19 @@ const categories = [
   { id: 10, name: '기타' },
 ];
 
-type DrawerItem = Coupon & {
-  quantity: number;
-  checked: boolean;
-};
-
 const Home = () => {
   const [open, setOpen] = useState(false);
 
   const [drawerItem, setDrawerItem] = useState<DrawerItem | null>(null);
 
-  const handleOpen = () => {
-    setOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
   const handleChange = (e: boolean) => {
     setOpen(e);
-    if (!e) {
-      document.body.style.overflow = 'auto';
-    }
   };
 
+  // Drawer에 아이템 추가
   const addDrawerItem = (item: Coupon) => {
-    const addCountItem = { ...item, quantity: 1, checked: true };
-    setDrawerItem(addCountItem);
-  };
-  const handleIncrease = () => {
-    if (drawerItem) {
-      setDrawerItem({ ...drawerItem, quantity: drawerItem.quantity + 1 });
-    }
-  };
-
-  const handleDecrease = () => {
-    if (drawerItem && drawerItem.quantity > 1) {
-      setDrawerItem({ ...drawerItem, quantity: drawerItem.quantity - 1 });
-    }
+    setDrawerItem({ ...item, quantity: 1, checked: true });
+    setOpen(true);
   };
 
   return (
@@ -101,11 +77,11 @@ const Home = () => {
         </div>
         <div className="grid gap-2 grid-cols-2 mt-2">
           {allCoupons.map((coupon: Coupon) => (
-            <ProductCard key={coupon.id} coupon={coupon} handleOpen={handleOpen} addDrawerItem={addDrawerItem} />
+            <ProductCard key={coupon.id} coupon={coupon} addDrawerItem={addDrawerItem} />
           ))}
         </div>
       </section>
-      <AddCartDrawer open={open} handleChange={handleChange} drawerItem={drawerItem} handleIncrease={handleIncrease} handleDecrease={handleDecrease} />
+      <AddCartDrawer open={open} handleChange={handleChange} drawerItem={drawerItem} setDrawerItem={setDrawerItem} />
     </div>
   );
 };
