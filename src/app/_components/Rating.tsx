@@ -65,7 +65,7 @@ const PartialStar = ({ ...props }: PartialStarProps) => {
 
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>
-      {React.cloneElement(Icon, {
+      {React.cloneElement<any>(Icon, {
         size,
         className: cn('fill-current', className, 'text-muted-foreground/20'),
       })}
@@ -77,7 +77,7 @@ const PartialStar = ({ ...props }: PartialStarProps) => {
           width: `${fillPercentage * 100}%`,
         }}
       >
-        {React.cloneElement(Icon, {
+        {React.cloneElement<any>(Icon, {
           size,
           className: cn('fill-current', className),
         })}

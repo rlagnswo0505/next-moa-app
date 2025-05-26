@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
 
 import './globals.css';
+
 import Script from 'next/script';
 
 const APP_KEY = process.env.NEXT_PUBLIC_NAVER_APP_KEY;

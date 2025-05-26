@@ -1,10 +1,13 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerHeader, DrawerFooter } from '@/components/ui/drawer';
 import Image from 'next/image';
-import CounterButton from '../(afterLogin)/cart/_component/CounterButton';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from '@/components/ui/select';
 import useCartStore from '@/store/cart';
+import CounterButton from '@/app/(afterLogin)/cart/_component/CounterButton';
+
 type Props = {
   open: boolean;
   handleChange: (e: boolean) => void;
@@ -14,12 +17,6 @@ type Props = {
 
 const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props) => {
   const { addToCart } = useCartStore((state: any) => state);
-
-  if (open) {
-    document.body.style.overflow = 'hidden';
-  } else {
-    document.body.style.overflow = 'auto';
-  }
 
   const totalOriginalPrice = drawerItem?.originalPrice * drawerItem?.quantity;
 
@@ -46,6 +43,15 @@ const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props)
       setDrawerItem({ ...drawerItem, quantity: drawerItem.quantity - 1 });
     }
   };
+
+  useEffect(() => {
+    // body 스크롤 잠금 해제
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, []);
 
   return (
     <Drawer open={open} onOpenChange={handleChange}>
