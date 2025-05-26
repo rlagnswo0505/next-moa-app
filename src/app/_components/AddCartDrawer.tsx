@@ -1,30 +1,57 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerHeader, DrawerFooter } from '@/components/ui/drawer';
 import Image from 'next/image';
-import CounterButton from '../../cart/_component/CounterButton';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from '@/components/ui/select';
 import useCartStore from '@/store/cart';
+import CounterButton from '@/app/(afterLogin)/cart/_component/CounterButton';
+
 type Props = {
   open: boolean;
   handleChange: (e: boolean) => void;
   drawerItem: any;
-  handleIncrease: () => void;
-  handleDecrease: () => void;
+  setDrawerItem: React.Dispatch<React.SetStateAction<any>>;
 };
 
-const AddCartDrawer = ({ open, handleChange, drawerItem, handleIncrease, handleDecrease }: Props) => {
+const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props) => {
   const { addToCart } = useCartStore((state: any) => state);
 
   const totalOriginalPrice = drawerItem?.originalPrice * drawerItem?.quantity;
 
   const totalPrice = drawerItem?.price * drawerItem?.quantity;
 
+  // 장바구니에 담기
   const handleAddToCart = () => {
     if (drawerItem) {
       addToCart(drawerItem);
+      handleChange(false);
     }
   };
+
+  // 개수 증가
+  const handleIncrease = () => {
+    if (drawerItem) {
+      setDrawerItem({ ...drawerItem, quantity: drawerItem.quantity + 1 });
+    }
+  };
+
+  // 개수 감소
+  const handleDecrease = () => {
+    if (drawerItem && drawerItem.quantity > 1) {
+      setDrawerItem({ ...drawerItem, quantity: drawerItem.quantity - 1 });
+    }
+  };
+
+  useEffect(() => {
+    // body 스크롤 잠금 해제
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, []);
 
   return (
     <Drawer open={open} onOpenChange={handleChange}>
@@ -77,14 +104,7 @@ const AddCartDrawer = ({ open, handleChange, drawerItem, handleIncrease, handleD
             </div>
           )}
           <DrawerFooter>
-            <Button
-              size={'lg'}
-              className="rounded-full h-12"
-              onClick={() => {
-                handleAddToCart();
-                handleChange(false);
-              }}
-            >
+            <Button size={'lg'} className="rounded-full h-12" onClick={handleAddToCart}>
               장바구니 담기
             </Button>
           </DrawerFooter>

@@ -33,13 +33,13 @@ const ConfirmDialog = ({ open = false, title, subTitle, onOpenChange = () => {},
           <AlertDialogDescription>{subTitle}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>취소</AlertDialogCancel>
+          <AlertDialogCancel className="flex-1">취소</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => {
               onConfirm();
               onOpenChange(false);
             }}
-            className="bg-moa"
+            className="bg-moa flex-1"
           >
             {confirmText}
           </AlertDialogAction>

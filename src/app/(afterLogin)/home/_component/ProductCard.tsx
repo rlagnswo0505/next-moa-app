@@ -12,11 +12,10 @@ import { Coupon } from '@/model/Coupon';
 
 type Props = {
   coupon: Coupon;
-  handleOpen: () => void;
   addDrawerItem: (item: Coupon) => void;
 };
 
-const ProductCard = ({ coupon, handleOpen, addDrawerItem }: Props) => {
+const ProductCard = ({ coupon, addDrawerItem }: Props) => {
   const router = useRouter();
 
   const handleMoveDetail = () => {
@@ -26,11 +25,10 @@ const ProductCard = ({ coupon, handleOpen, addDrawerItem }: Props) => {
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation(); // Prevent the click event from bubbling up to the card
     addDrawerItem(coupon);
-    handleOpen();
   };
 
   return (
-    <Card key={coupon.id} className="w-full rounded-lg border-none gap-2 py-1 group cursor-pointer" onClick={handleMoveDetail}>
+    <Card className="w-full rounded-lg border-none gap-2 py-1 group cursor-pointer" onClick={handleMoveDetail}>
       <CardHeader className="border-b p-2">
         <div className="w-full h-45 relative rounded-lg overflow-hidden">
           <Image

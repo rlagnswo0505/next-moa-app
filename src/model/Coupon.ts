@@ -16,3 +16,8 @@ export type Coupon = {
 };
 
 export type CouponList = Coupon[];
+
+export type DrawerItem = Coupon & {
+  quantity: number;
+  checked: boolean;
+};
