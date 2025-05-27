@@ -2,7 +2,7 @@
 
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import React, { useRef } from 'react';
+import React from 'react';
 
 const SearchBar = () => {
   // 서치바 현재 스크롤 위치 맨위 벗어나면 shadow 넣기

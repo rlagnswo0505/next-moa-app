@@ -1,7 +1,7 @@
+import HorizonScroll from '@/app/_components/HorizonScroll';
 import AdBanner from './_component/AdBanner';
 import CouponList from './_component/CouponList';
-import HorizonScroll from './_component/HorizonScroll';
-import SearchBar from './_component/SearchBar';
+import SearchBar from '@/app/_components/SearchBar';
 
 const Home = () => {
   return (
