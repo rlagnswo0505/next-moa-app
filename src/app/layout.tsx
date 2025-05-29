@@ -5,6 +5,8 @@ import localFont from 'next/font/local';
 import './globals.css';
 
 import Script from 'next/script';
+import { Toaster } from '@/components/ui/sonner';
+import { ThemeProvider } from '@/app/_components/theme-provider';
 
 const APP_KEY = process.env.NEXT_PUBLIC_NAVER_APP_KEY;
 
@@ -48,9 +50,12 @@ export default function RootLayout({
         src={`http://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${APP_KEY}`}
       ></Script>
       <body className={`${geistSans.variable} ${geistMono.variable} ${pretendard.className} antialiased`}>
-        <main className="bg-gray-200 min-h-screen">
-          <section className="max-w-[600px] mx-auto bg-white min-h-[inherit]">{children}</section>
-        </main>
+        <ThemeProvider attribute="class" defaultTheme="white" enableSystem disableTransitionOnChange>
+          <main className="bg-gray-200 min-h-screen">
+            <section className="max-w-[600px] mx-auto bg-white min-h-[inherit]">{children}</section>
+            <Toaster richColors />
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -21,7 +21,7 @@ const CouponCard = ({ coupon, state }: Props) => {
   const router = useRouter();
 
   const handleMoveDetail = () => {
-    router.push(`/coupon/${coupon.id}`);
+    router.push(`/coupon/${coupon.id}/use`);
   };
 
   return (
