@@ -28,8 +28,13 @@ const CouponCard = ({ coupon, state }: Props) => {
     router.push(`/coupon/${coupon.id}/map`);
   };
 
+  const handleMoveReview = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation(); // 클릭 이벤트 전파 방지
+    router.push(`/coupon/${coupon.id}/review`);
+  };
+
   return (
-    <Card className="w-full rounded-lg border-none gap-2 py-1 group cursor-pointer" onClick={handleMoveDetail}>
+    <Card className="w-full rounded-lg border-none gap-2 py-1 group cursor-pointer" onClick={state === 'available' ? handleMoveDetail : undefined}>
       <CardHeader className="border-b p-2">
         <div className="w-full h-45 relative rounded-lg overflow-hidden">
           <Image
@@ -82,7 +87,7 @@ const CouponCard = ({ coupon, state }: Props) => {
             <span className="text-center text-muted-foreground">사용 일시 2025년 8월 1일</span>
             <Separator />
             <div className="px-2">
-              <Button variant="ghost" className="w-full">
+              <Button variant="ghost" className="w-full" onClickCapture={handleMoveReview}>
                 리뷰 쓰기
               </Button>
             </div>
