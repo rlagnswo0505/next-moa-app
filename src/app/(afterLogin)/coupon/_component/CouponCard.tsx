@@ -9,7 +9,6 @@ import { Badge } from '@/components/ui/badge';
 import { useRouter } from 'next/navigation';
 import { Coupon } from '@/model/Coupon';
 import { MapPin } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 
 type Props = {
@@ -22,6 +21,11 @@ const CouponCard = ({ coupon, state }: Props) => {
 
   const handleMoveDetail = () => {
     router.push(`/coupon/${coupon.id}/use`);
+  };
+
+  const handleMoveMap = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation(); // 클릭 이벤트 전파 방지
+    router.push(`/coupon/${coupon.id}/map`);
   };
 
   return (
@@ -66,7 +70,7 @@ const CouponCard = ({ coupon, state }: Props) => {
             </div>
             <Separator />
             <div className="px-2">
-              <Button variant="ghost" className="w-full">
+              <Button variant="ghost" className="w-full" onClickCapture={handleMoveMap}>
                 <MapPin />
                 매장 길찾기
               </Button>

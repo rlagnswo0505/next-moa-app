@@ -45,17 +45,17 @@ export default function RootLayout({
   return (
     <html lang="kr" className={`${pretendard.variable}`}>
       <Script
-        strategy="afterInteractive"
+        strategy="beforeInteractive"
         // https 와 http 모두 지원
         src={`http://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${APP_KEY}`}
       ></Script>
       <body className={`${geistSans.variable} ${geistMono.variable} ${pretendard.className} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="white" enableSystem disableTransitionOnChange>
-          <main className="bg-gray-200 min-h-screen">
-            <section className="max-w-[600px] mx-auto bg-white min-h-[inherit]">{children}</section>
-            <Toaster richColors />
-          </main>
-        </ThemeProvider>
+        {/* <ThemeProvider attribute="class" defaultTheme="white" enableSystem disableTransitionOnChange> */}
+        <main className="bg-gray-200 min-h-screen">
+          <section className="max-w-[600px] mx-auto bg-white min-h-[inherit]">{children}</section>
+          <Toaster richColors />
+        </main>
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );
