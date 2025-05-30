@@ -17,6 +17,7 @@ export const allCoupons: CouponList = [
     distance: '0.6km',
     remainingTime: '14분',
     image: faker.image.url(),
+    state: 'available', // 추가된 필드: 쿠폰 상태
   },
   {
     id: 2,
@@ -33,6 +34,7 @@ export const allCoupons: CouponList = [
     distance: '0.6km',
     remainingTime: '112분',
     image: faker.image.url(),
+    state: 'available', // 추가된 필드: 쿠폰 상태
   },
   {
     id: 3,
@@ -49,6 +51,7 @@ export const allCoupons: CouponList = [
     distance: '0.6km',
     remainingTime: '14분',
     image: faker.image.url(),
+    state: 'used', // 추가된 필드: 쿠폰 상태
   },
   {
     id: 4,
@@ -65,5 +68,6 @@ export const allCoupons: CouponList = [
     distance: '0.6km',
     remainingTime: '14분',
     image: faker.image.url(),
+    state: 'expired', // 추가된 필드: 쿠폰 상태
   },
 ];

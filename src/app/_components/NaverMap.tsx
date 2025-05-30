@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect } from 'react';
 
 const APP_KEY = process.env.NEXT_PUBLIC_NAVER_APP_KEY;

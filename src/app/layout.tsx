@@ -5,6 +5,8 @@ import localFont from 'next/font/local';
 import './globals.css';
 
 import Script from 'next/script';
+import { Toaster } from '@/components/ui/sonner';
+import { ThemeProvider } from '@/app/_components/theme-provider';
 
 const APP_KEY = process.env.NEXT_PUBLIC_NAVER_APP_KEY;
 
@@ -41,16 +43,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="kr" className={`${pretendard.variable}`}>
-      <Script
-        strategy="afterInteractive"
-        // https 와 http 모두 지원
-        src={`http://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${APP_KEY}`}
-      ></Script>
+    <html lang="kr">
       <body className={`${geistSans.variable} ${geistMono.variable} ${pretendard.className} antialiased`}>
-        <main className="bg-gray-200 min-h-screen">
-          <section className="max-w-[600px] mx-auto bg-white min-h-[inherit]">{children}</section>
-        </main>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+          <main className="bg-gray-200 min-h-screen">
+            <section className="max-w-[600px] mx-auto bg-white min-h-[inherit]">{children}</section>
+            <Toaster richColors />
+          </main>
+        </ThemeProvider>
+        <Script
+          strategy="beforeInteractive"
+          // https 와 http 모두 지원
+          src={`http://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${APP_KEY}`}
+          async
+        ></Script>
       </body>
     </html>
   );

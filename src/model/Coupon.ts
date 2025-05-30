@@ -13,6 +13,7 @@ export type Coupon = {
   distance: string;
   remainingTime: string;
   image: string;
+  state?: 'available' | 'used' | 'expired'; // 쿠폰 상태 추가
 };
 
 export type CouponList = Coupon[];

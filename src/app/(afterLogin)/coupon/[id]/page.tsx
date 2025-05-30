@@ -22,7 +22,7 @@ const CouponDetail = ({ params }: { params: Params }) => {
   const coupon = allCoupons?.find((item: any) => item.id === Number(id));
 
   if (!coupon) {
-    return <div>쿠폰을 찾을 수 없습니다.</div>;
+    return <div className="w-full h-[50dvh] flex justify-center items-center">쿠폰을 찾을 수 없습니다.</div>;
   }
 
   return (
