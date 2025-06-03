@@ -15,6 +15,8 @@ interface Address {
   id: string;
   name: string;
   address: string;
+  lat: number; // 위도
+  lng: number; // 경도
   checked: boolean;
 }
 
@@ -31,10 +33,13 @@ export const useAddressStore = create<AddressState>()(
     (set, get) => ({
       addresses: [],
       addAddress: (address) => {
-        const newAddress = { ...address, id: crypto.randomUUID(), checked: false };
+        const newAddress = { ...address, id: crypto.randomUUID(), checked: true };
         set((state) => {
-          const updatedAddresses = [...state.addresses, newAddress];
-          return { addresses: updatedAddresses.slice(0, 10) }; // 최대 10개까지만 저장
+          // 기존 주소들 모두 checked 상태 해제
+          const unCheckedAddresses = state.addresses.map((addr) => ({ ...addr, checked: false }));
+
+          const updatedAddresses = [...unCheckedAddresses, newAddress];
+          return { addresses: updatedAddresses };
         });
       },
       removeAddress: (id) => {

@@ -54,7 +54,7 @@ export default function RootLayout({
         <Script
           strategy="beforeInteractive"
           // https 와 http 모두 지원
-          src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${APP_KEY}`}
+          src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${APP_KEY}&submodules=geocoder`}
           async
         ></Script>
       </body>
