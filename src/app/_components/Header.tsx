@@ -1,8 +1,9 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { useAddressStore } from '@/store/adress';
 import useCartStore from '@/store/cart';
-import { ArrowLeft, Bell, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, Bell, ChevronRight, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSelectedLayoutSegment } from 'next/navigation';
 import React from 'react';
@@ -41,6 +42,10 @@ const pages = [
 const Header = ({ rightButton = true }) => {
   const params = useSelectedLayoutSegment();
 
+  const { addresses } = useAddressStore((state) => state);
+
+  const checkedAddress = addresses.find((addr) => addr.checked);
+
   const pageTitle = pages.find((page) => page.param === params)?.title;
 
   const router = useRouter();
@@ -49,6 +54,10 @@ const Header = ({ rightButton = true }) => {
 
   const handleBack = () => {
     router.back();
+  };
+
+  const handleMoveToAddress = () => {
+    router.push('/my-adress');
   };
 
   console.log('Header params:', params);
@@ -75,10 +84,21 @@ const Header = ({ rightButton = true }) => {
     h-11
   "
       >
-        <div className="flex items-center w-22">
+        <div className="flex items-center flex-1">
           {params === 'home' ? (
-            <Button variant={'ghost'} className="font-bold">
-              모아
+            <Button
+              variant={'ghost'}
+              className="font-bold
+              max-w-40"
+              onClick={handleMoveToAddress}
+            >
+              <span
+                // 넓이 넘어가면 ... 처리
+                className="overflow-hidden text-ellipsis whitespace-nowrap"
+              >
+                {checkedAddress ? checkedAddress.name : '위치 설정'}
+              </span>
+              <ChevronRight />
             </Button>
           ) : (
             <Button variant="ghost" size="icon" className="w-11 h-11" onClick={handleBack} aria-label="뒤로가기">
@@ -87,7 +107,7 @@ const Header = ({ rightButton = true }) => {
           )}
         </div>
         <h4 className="text-md font-bold">{pageTitle}</h4>
-        <div className="flex items-center w-22">
+        <div className="flex justify-end items-center flex-1">
           {rightButton && (
             <Button variant="ghost" size="icon" className="relative w-11 h-11" asChild>
               <Link href="/cart">

@@ -6,9 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAddressStore } from '@/store/adress';
 import { Locate, MapPin } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const MyAdressPage = () => {
+  const router = useRouter();
+
   const { addresses, setCheckedAddress } = useAddressStore((state) => state);
 
   return (
@@ -20,7 +23,14 @@ const MyAdressPage = () => {
       </Button>
       <ul className="mt-4">
         {addresses.map((address) => (
-          <li key={address.id} className="flex items-center justify-between p-2 border-b cursor-pointer hover:bg-gray-50" onClick={() => setCheckedAddress(address.id)}>
+          <li
+            key={address.id}
+            className="flex items-center justify-between p-2 border-b cursor-pointer hover:bg-gray-50"
+            onClick={() => {
+              setCheckedAddress(address.id);
+              router.push('/home');
+            }}
+          >
             <div className="p-4">
               <MapPin />
             </div>
