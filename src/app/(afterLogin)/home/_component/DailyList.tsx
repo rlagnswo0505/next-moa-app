@@ -1,10 +1,9 @@
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { Star } from 'lucide-react';
 import React from 'react';
+import DailyCard from './DailyCard';
+import { DailyItem, DailyList as IDailyList } from '@/model/Daily';
 
-const dailyList = [
+const dailyList: IDailyList = [
   {
     id: 1,
     store: '라오니 피자 강남점',
@@ -51,38 +50,8 @@ const DailyList = () => {
   return (
     <ScrollArea type="hover">
       <div className="flex items-center gap-2 pr-2">
-        {dailyList.map((item) => (
-          <Card className="p-0 w-40 gap-0">
-            <CardContent className="p-1 flex flex-col justify-between border-b gap-4">
-              <div>
-                <h4 className="w-full text-ellipsis overflow-hidden whitespace-nowrap">{item.store}</h4>
-                {item.menus.length === 1 ? (
-                  <p className="text-muted-foreground w-full text-ellipsis overflow-hidden whitespace-nowrap">{item.menus[0]}</p>
-                ) : (
-                  <p className="text-muted-foreground w-full text-ellipsis overflow-hidden whitespace-nowrap">
-                    {item.menus[0]} 외 {item.menus.length - 1}개
-                  </p>
-                )}
-              </div>
-              <div className="flex items-center gap-1 text-xs">
-                <Star className="fill-yellow-500 text-yellow-500 w-4 h-4" />
-                <span>
-                  {item.rating} ({item.review > 100 ? '100+' : item.review} 리뷰)
-                </span>
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-start p-1">
-              {item.discount.min === item.discount.max ? (
-                <Badge className="bg-blue-500 text-white text-md" variant="secondary">
-                  {item.discount.min}% 할인
-                </Badge>
-              ) : (
-                <Badge className="bg-blue-500 text-white text-md" variant="secondary">
-                  {item.discount.min}~{item.discount.max}% 할인
-                </Badge>
-              )}
-            </CardFooter>
-          </Card>
+        {dailyList.map((item: DailyItem) => (
+          <DailyCard key={item?.id} item={item} />
         ))}
       </div>
       <ScrollBar orientation="horizontal" hidden />
