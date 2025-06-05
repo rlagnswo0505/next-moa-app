@@ -37,6 +37,10 @@ const pages = [
     title: '마이페이지',
     param: 'my-page',
   },
+  {
+    title: '내 위치 설정',
+    param: 'my-address',
+  },
 ];
 
 const Header = ({ rightButton = true }) => {
@@ -57,7 +61,7 @@ const Header = ({ rightButton = true }) => {
   };
 
   const handleMoveToAddress = () => {
-    router.push('/my-adress');
+    router.push('/my-address');
   };
 
   console.log('Header params:', params);
@@ -71,18 +75,18 @@ const Header = ({ rightButton = true }) => {
       <div className="h-11 w-full"></div>
       <header
         className="fixed top-0 left-0
-    right-0
-    bg-white
-    z-50
-    mx-auto
-    max-w-[600px]
-    border-b
-    flex
-    items-center
-    justify-between
-    px-1.5
-    h-11
-  "
+                  right-0
+                  bg-white
+                  z-50
+                  mx-auto
+                  max-w-[600px]
+                  border-b
+                  flex
+                  items-center
+                  justify-between
+                  px-1.5
+                  h-11
+                  "
       >
         <div className="flex items-center flex-1">
           {params === 'home' ? (

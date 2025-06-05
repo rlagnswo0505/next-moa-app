@@ -11,7 +11,7 @@ export default function Home() {
       </section>
       <footer className="pb-5 px-3">
         <Button size="lg" className="w-full rounded-full h-12 bg-moa hover:bg-moa-foreground" asChild>
-          <Link href="/my-adress">내 위치 설정하고 시작하기</Link>
+          <Link href="/my-address">내 위치 설정하고 시작하기</Link>
         </Button>
       </footer>
     </div>

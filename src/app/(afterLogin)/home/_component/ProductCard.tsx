@@ -29,7 +29,7 @@ const ProductCard = ({ coupon, addDrawerItem }: Props) => {
 
   return (
     <Card className="w-full rounded-lg border-none gap-2 py-1 group cursor-pointer" onClick={handleMoveDetail}>
-      <CardHeader className="border-b p-2">
+      <CardHeader className="border-b p-1 md:p-2">
         <div className="w-full h-45 relative rounded-lg overflow-hidden">
           <Image
             src={coupon.image}
@@ -66,7 +66,7 @@ const ProductCard = ({ coupon, addDrawerItem }: Props) => {
           </span>
           <span className="text-muted-foreground">참여 중</span>
         </div>
-        <div className="px-2 mt-2">
+        <div className="px-1 mt-2 md:px-2">
           <Button variant="ghost" className="w-full" onClickCapture={handleAddToCart}>
             <ShoppingCart /> 장바구니 담기
           </Button>
