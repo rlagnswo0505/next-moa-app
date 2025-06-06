@@ -129,25 +129,6 @@ const Header = ({ rightButton = true }) => {
               </Link>
             </Button>
           )}
-          {rightButton && (
-            <Button variant="ghost" size="icon" className="relative w-11 h-11">
-              <Bell />
-              <span
-                className="absolute
-            top-2
-            right-2
-            w-2
-            h-2
-            rounded-full
-            bg-moa
-            text-white
-            text-[10px]
-            flex
-            items-center
-            justify-center"
-              />
-            </Button>
-          )}
         </div>
       </header>
     </>
