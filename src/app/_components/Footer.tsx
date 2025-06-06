@@ -13,7 +13,7 @@ const Footer = () => {
     return null;
   }
 
-  if (segment[0] === 'cart') {
+  if (segment[0] === 'cart' || segment[0] === 'store') {
     return null;
   }
 
