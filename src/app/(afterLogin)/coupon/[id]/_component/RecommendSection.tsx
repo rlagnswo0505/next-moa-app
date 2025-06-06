@@ -11,7 +11,7 @@ const RecommendSection = () => {
     <section className="py-3 pl-3">
       <h4 className="mb-2 font-bold">{user.nickname}님을 위한 추천 딜</h4>
       <ScrollArea type="hover">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 pr-2">
           {allCoupons.map((recommendItem: Coupon) => (
             <div key={recommendItem.id} className="flex flex-col text-sm cursor-pointer group">
               <div className="w-25 h-25 rounded-lg overflow-hidden">

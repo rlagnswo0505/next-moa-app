@@ -42,9 +42,9 @@ const CartItem = ({ cartItem, handleClickRemoveBtn }: Props) => {
               </Button>
             </div>
             <p className="font-bold text-muteds-foreground">{cartItem.store}</p>
-            <div className="flex items-center justify-between mt-2">
+            <div className="flex items-end justify-between mt-2">
               <CounterButton cartItem={cartItem} handleIncrease={handleAddToCart} handleDecrese={handleDecreaseQuantity} />
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-col md:flex-row">
                 <span className="text-sm text-muted-foreground line-through">{totalItemOriginalPrice?.toLocaleString()}원</span>
                 <span className="text-moa font-bold">{totalItemPrice?.toLocaleString()}원</span>
               </div>

@@ -35,7 +35,7 @@ const CouponCard = ({ coupon, state }: Props) => {
 
   return (
     <Card className="w-full rounded-lg border-none gap-2 py-1 group cursor-pointer" onClick={state === 'available' ? handleMoveDetail : undefined}>
-      <CardHeader className="border-b p-2">
+      <CardHeader className="border-b p-1 md:p-2">
         <div className="w-full h-45 relative rounded-lg overflow-hidden">
           <Image
             src={coupon.image}
@@ -94,7 +94,7 @@ const CouponCard = ({ coupon, state }: Props) => {
           </div>
         )}
         {state === 'expired' && (
-          <div className="flex flex-col gap-2 px-2">
+          <div className="flex flex-col gap-2 px-1 md:px-2">
             <Button variant="ghost" className="w-full">
               연장 요청(7일)
             </Button>
