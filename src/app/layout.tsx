@@ -44,9 +44,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="kr">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${pretendard.className} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${pretendard.className} antialiased bg-gray-200`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <main className="bg-gray-200 min-h-screen">
+          <main className="min-h-screen h-full">
             <section className="max-w-[600px] mx-auto bg-white min-h-[inherit]">{children}</section>
             <Toaster richColors />
           </main>
