@@ -27,7 +27,7 @@ const layout = async ({
         className="p-4 bg-white
         flex flex-col items-center gap-2"
       >
-        <h3 className="text-xl">[{coupon?.store}]</h3>
+        <h3 className="text-xl mt-10">[{coupon?.store}]</h3>
         <Card className="p-3 w-45 gap-2">
           <div className="w-full h-45 relative rounded-lg overflow-hidden">
             <Image
