@@ -4,6 +4,13 @@ import { Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import MenuHeader from './_component/MenuHeader';
+import CouponList from '../../home/_component/CouponList';
+import { allCoupons } from '@/_data/allCoupon';
+import DailyMenuCard from './_component/DailyMenuCard';
+import { Coupon } from '@/model/Coupon';
+import DailyMenuList from './_component/DailyMenuList';
+import ReviewTab from '../../coupon/[id]/_component/ReviewTab';
+import InfoTab from '../../coupon/[id]/_component/InfoTab';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -13,6 +20,11 @@ const StorePage = async ({ params }: Props) => {
   const { id } = await params;
 
   console.log('Store ID:', id);
+
+  const addDrawerItem = (item: Coupon) => {
+    console.log('Add to cart:', item);
+    // 여기에 장바구니에 아이템을 추가하는 로직을 구현하세요.
+  };
 
   return (
     <div className="w-full">
@@ -41,16 +53,24 @@ const StorePage = async ({ params }: Props) => {
           <TabsContent value="menu" className="p-4  pb-11">
             <MenuHeader />
             <section id="groupPurchase">
-              <h2>할인 공구 메뉴</h2>
-              <div className="min-h-dvh bg-amber-100 w-full"></div>
+              <h2 className="my-2 text-xl font-bold">할인 공구 메뉴</h2>
+              <div className="w-full">
+                <CouponList />
+              </div>
             </section>
             <section id="menuDaily">
-              <h2>데일리 할인 메뉴</h2>
-              <div className="min-h-dvh bg-amber-100 w-full"></div>
+              <h2 className="my-2 text-xl font-bold">데일리 할인 메뉴</h2>
+              <div className="w-full">
+                <DailyMenuList />
+              </div>
             </section>
           </TabsContent>
-          <TabsContent value="review" className="p-4  pb-11"></TabsContent>
-          <TabsContent value="info" className="p-4  pb-11"></TabsContent>
+          <TabsContent value="review" className="p-4  pb-11">
+            <ReviewTab />
+          </TabsContent>
+          <TabsContent value="info" className="p-4  pb-11">
+            <InfoTab />
+          </TabsContent>
         </Tabs>
       </section>
     </div>
