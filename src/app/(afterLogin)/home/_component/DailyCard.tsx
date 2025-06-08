@@ -18,8 +18,8 @@ const DailyCard = ({ item }: Props) => {
   };
 
   return (
-    <Card className="p-0 w-40 gap-0 cursor-pointer rounded-md hover:shadow-xl" onClick={() => handleCardClick(item.id)}>
-      <CardContent className="p-1 flex flex-col justify-between border-b gap-4">
+    <Card className="p-0 w-40 gap-0 cursor-pointer rounded-md shadow-md" onClick={() => handleCardClick(item.id)}>
+      <CardContent className="p-2 flex flex-col justify-between border-b gap-4">
         <div>
           <h4 className="w-full text-ellipsis overflow-hidden whitespace-nowrap">{item.store}</h4>
           {item.menus.length === 1 ? (
@@ -37,7 +37,7 @@ const DailyCard = ({ item }: Props) => {
           </span>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-start p-1">
+      <CardFooter className="flex justify-start px-2 py-1">
         {item.discount.min === item.discount.max ? (
           <Badge className="bg-blue-500 text-white text-md" variant="secondary">
             {item.discount.min}% 할인

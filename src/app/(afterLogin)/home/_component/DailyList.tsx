@@ -49,7 +49,7 @@ const dailyList: IDailyList = [
 const DailyList = () => {
   return (
     <ScrollArea type="hover">
-      <div className="flex items-center gap-2 pr-2">
+      <div className="flex items-center gap-2 pr-2 py-2">
         {dailyList.map((item: DailyItem) => (
           <DailyCard key={item?.id} item={item} />
         ))}
