@@ -18,17 +18,15 @@ const MyPage = () => {
         <h1>
           <strong>{user.name} 님</strong>, 반가워요. 식사는 하셨나요?
         </h1>
-        {MyPageMetadata.discountedPrice && (
-          <div className="flex justify-start mt-4">
-            <div className="relative bg-moa-foreground/20 text-primary rounded-lg shadow-lg py-1 px-2 max-w-xs">
-              {/* 위쪽 꼬리 */}
-              <div className="absolute bottom-full left-6 w-0 h-0 border-l-[10px] border-r-[10px] border-b-[10px] border-l-transparent border-r-transparent border-b-moa-foreground/20"></div>
-              <p className="text-sm">
-                공구 할인으로 매장가 보다 총 <strong>{MyPageMetadata.discountedPrice.toLocaleString()}원</strong> 저렴하게 먹었어요.
-              </p>
-            </div>
+        <div className="flex justify-start mt-4">
+          <div className="relative bg-moa-foreground/20 text-primary rounded-lg shadow-lg py-1 px-2 max-w-xs">
+            {/* 위쪽 꼬리 */}
+            <div className="absolute bottom-full left-6 w-0 h-0 border-l-[10px] border-r-[10px] border-b-[10px] border-l-transparent border-r-transparent border-b-moa-foreground/20"></div>
+            <p className="text-sm">
+              공구 할인으로 매장가 보다 총 <strong>{MyPageMetadata.discountedPrice.toLocaleString()}원</strong> 저렴하게 먹었어요.
+            </p>
           </div>
-        )}
+        </div>
         <div className="border rounded-lg p-2 mt-4 grid grid-cols-3">
           <Link href="/" className="flex flex-col gap-4 items-center border-r hover:bg-muted rounded py-2">
             <div className="flex items-center gap-2 text-muted-foreground">
