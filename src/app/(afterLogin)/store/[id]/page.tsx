@@ -50,7 +50,7 @@ const StorePage = async ({ params }: Props) => {
             <TabsTrigger value="review">리뷰</TabsTrigger>
             <TabsTrigger value="info">정보</TabsTrigger>
           </TabsList>
-          <TabsContent value="menu" className="p-4  pb-11">
+          <TabsContent value="menu" className="p-4  pb-15">
             <MenuHeader />
             <section id="groupPurchase">
               <h2 className="my-2 text-xl font-bold">할인 공구 메뉴</h2>
@@ -65,10 +65,10 @@ const StorePage = async ({ params }: Props) => {
               </div>
             </section>
           </TabsContent>
-          <TabsContent value="review" className="p-4  pb-11">
+          <TabsContent value="review" className="p-4  pb-15">
             <ReviewTab />
           </TabsContent>
-          <TabsContent value="info" className="p-4  pb-11">
+          <TabsContent value="info" className="p-4  pb-15">
             <InfoTab />
           </TabsContent>
         </Tabs>
