@@ -1,7 +1,9 @@
 import { Button } from '@/components/ui/button';
+import { createClient } from '@/utils/supabase/server';
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <section className="flex-1 flex items-center justify-center">
