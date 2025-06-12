@@ -31,7 +31,7 @@ const MyAdressPage = () => {
               router.push('/home');
             }}
           >
-            <div className="p-4">
+            <div className="p-1">
               <MapPin />
             </div>
             <div className="flex-1 ml-2 flex flex-col">
