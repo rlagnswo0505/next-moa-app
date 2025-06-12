@@ -43,20 +43,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
-  let { data, error } = await supabase.rpc('get_main_deal_list', {
-    p_user_lat: 37.5665,
-    p_user_lng: 126.978,
-    p_category_id: null,
-    p_keyword: '',
-    p_sort_by: 'distance',
-    p_limit_cnt: 10,
-    p_offset_cnt: 1,
-  });
-  if (error) console.error(error);
-  else console.log(data);
-
   return (
     <RQProvider>
       <html lang="kr">
