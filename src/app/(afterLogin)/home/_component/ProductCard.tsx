@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { Coupon } from '@/model/Coupon';
 
 type Props = {
-  coupon: Coupon;
+  coupon: any;
   addDrawerItem: (item: Coupon) => void;
 };
 
@@ -46,9 +46,9 @@ const ProductCard = ({ coupon, addDrawerItem }: Props) => {
           </div>
         </div>
         <div className="flex flex-col gap-1 ">
-          <h4>{coupon.store}</h4>
-          <p>{coupon.menu}</p>
-          <i className="text-moa font-bold">{coupon.discount}</i>
+          <h4 className="text-muted-foreground">{coupon.store_name}</h4>
+          <p>{coupon.title}</p>
+          <i className="text-moa font-bold">{coupon.discount_rate}%</i>
           <div className="flex justify-between items-center">
             <span className="font-bold">{coupon.price?.toLocaleString()}원</span>
             <span className="text-muted-foreground line-through">{coupon.originalPrice?.toLocaleString()}원</span>

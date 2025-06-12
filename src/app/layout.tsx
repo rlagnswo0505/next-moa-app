@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   description: '모아',
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

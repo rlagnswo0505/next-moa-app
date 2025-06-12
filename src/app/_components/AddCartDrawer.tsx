@@ -55,26 +55,28 @@ const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props)
 
   return (
     <Drawer open={open} onOpenChange={handleChange}>
-      <DrawerContent>
-        <div className="mx-auto w-full max-w-[600px]">
-          <DrawerHeader>
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="옵션을 선택해주세요" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Fruits</SelectLabel>
-                  <SelectItem value="apple">Apple</SelectItem>
-                  <SelectItem value="banana">Banana</SelectItem>
-                  <SelectItem value="blueberry">Blueberry</SelectItem>
-                  <SelectItem value="grapes">Grapes</SelectItem>
-                  <SelectItem value="pineapple">Pineapple</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </DrawerHeader>
-          {drawerItem ? (
+      {drawerItem ? (
+        <DrawerContent>
+          <div className="mx-auto w-full max-w-[600px]">
+            <DrawerHeader>
+              {drawerItem.options.length > 0 && (
+                <Select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="옵션을 선택해주세요" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>옵션</SelectLabel>
+                      {drawerItem.options.map((option: any, index: number) => (
+                        <SelectItem key={option.id} value={option.additional_price}>
+                          {option.option_name} ({option.additional_price.toLocaleString()}원)
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            </DrawerHeader>
             <div className="p-4">
               <div className="h-[200px]">
                 <section className="flex items-start gap-4 pb-4">
@@ -82,8 +84,8 @@ const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props)
                     <Image src={drawerItem.image} alt={drawerItem.menu} width={80} height={80} className="object-cover relative rounded-md w-full h-full" />
                   </div>
                   <div>
-                    <h4 className="text-lg">[{drawerItem.store}]</h4>
-                    <h4 className="text-lg">{drawerItem.menu}</h4>
+                    <h4 className="text-lg text-muted-foreground">[{drawerItem.store_name}]</h4>
+                    <h4 className="text-lg font-bold">{drawerItem.title}</h4>
                   </div>
                 </section>
                 <section className="flex items-start justify-between border-y py-2 mt-2">
@@ -97,19 +99,34 @@ const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props)
                 </section>
               </div>
             </div>
-          ) : (
-            <div>
-              <h4 className="text-center text-muted-foreground">장바구니에 담긴 상품이 없습니다.</h4>
-              <p className="text-center text-muted-foreground">상품을 선택하여 장바구니에 담아보세요.</p>
-            </div>
-          )}
-          <DrawerFooter>
-            <Button size={'lg'} className="rounded-full h-12" onClick={handleAddToCart}>
-              장바구니 담기
-            </Button>
-          </DrawerFooter>
-        </div>
-      </DrawerContent>
+            <DrawerFooter>
+              <div className="flex items-end justify-between w-full gap-2">
+                <div className="flex flex-col gap-1">
+                  <div className="flex justify-center">
+                    <div className="relative bg-primary rounded-full py-1 px-2 max-w-xs   text-sm">
+                      <p className="text-white">추가 할인 5%</p>
+                      {/* 아래쪽 꼬리 */}
+                      <div className="absolute top-full left-6 w-0 h-0 border-l-[8px] border-r-[8px] border-t-[8px] border-l-transparent border-r-transparent border-t-primary"></div>
+                      <div className="absolute top-full left-6 w-0 h-0 border-l-[12px] border-r-[12px] border-t-[12px] border-l-transparent border-r-transparent border-t-gray-200 -z-10 translate-y-px"></div>
+                    </div>
+                  </div>
+                  <Button size={'lg'} className="rounded-full h-12" variant={'outline'}>
+                    친구 초대
+                  </Button>
+                </div>
+                <Button size={'lg'} className="flex-1 rounded-full h-12" onClick={handleAddToCart}>
+                  {totalPrice?.toLocaleString()}원 담기
+                </Button>
+              </div>
+            </DrawerFooter>
+          </div>
+        </DrawerContent>
+      ) : (
+        <DrawerContent>
+          <h4 className="text-center text-muted-foreground">장바구니에 담긴 상품이 없습니다.</h4>
+          <p className="text-center text-muted-foreground">상품을 선택하여 장바구니에 담아보세요.</p>
+        </DrawerContent>
+      )}
     </Drawer>
   );
 };
