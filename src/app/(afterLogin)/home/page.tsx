@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 const Home = () => {
   return (
     <div className="flex flex-col gap-4">
+      <h1>안녕하세요</h1>
       <SearchBar />
       <section className="px-2 mt-14 md:px-4">
         <AdBanner />
