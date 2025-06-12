@@ -45,13 +45,13 @@ const CouponPage = () => {
             <TabsTrigger value="used">사용 완료 {usedCoupons.length}</TabsTrigger>
             <TabsTrigger value="expired">사용 만료{expiredCoupons.length}</TabsTrigger>
           </TabsList>
-          <TabsContent value="available" className="p-1 md:p-3 pb-11">
+          <TabsContent value="available" className="p-1 md:p-3 pb-15">
             <div className="grid gap-2 grid-cols-2 mt-2">{availabedCoupons && availabedCoupons.map((coupon: Coupon) => <CouponCard key={coupon.id} coupon={coupon} state={tabValue} />)}</div>
           </TabsContent>
-          <TabsContent value="used" className="p-1 md:p-3 pb-11">
+          <TabsContent value="used" className="p-1 md:p-3 pb-15">
             <div className="grid gap-2 grid-cols-2 mt-2">{usedCoupons && usedCoupons.map((coupon: Coupon) => <CouponCard key={coupon.id} coupon={coupon} state={tabValue} />)}</div>
           </TabsContent>
-          <TabsContent value="expired" className="p-1 md:p-3 pb-11">
+          <TabsContent value="expired" className="p-1 md:p-3 pb-15">
             <div className="grid gap-2 grid-cols-2 mt-2">{expiredCoupons && expiredCoupons.map((coupon: Coupon) => <CouponCard key={coupon.id} coupon={coupon} state={tabValue} />)}</div>
           </TabsContent>
         </Tabs>
