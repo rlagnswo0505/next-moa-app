@@ -52,20 +52,6 @@ const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props)
     addToCartMutation.mutate();
   };
 
-  // 개수 증가
-  const handleIncrease = () => {
-    if (drawerItem) {
-      setDrawerItem({ ...drawerItem, quantity: drawerItem.quantity + 1 });
-    }
-  };
-
-  // 개수 감소
-  const handleDecrease = () => {
-    if (drawerItem && drawerItem.quantity > 1) {
-      setDrawerItem({ ...drawerItem, quantity: drawerItem.quantity - 1 });
-    }
-  };
-
   useEffect(() => {
     // body 스크롤 잠금 해제
     if (open) {
@@ -116,7 +102,7 @@ const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props)
                     <h4 className="text-xl font-bold">{totalPrice?.toLocaleString()}원</h4>
                   </div>
                   <div>
-                    <CounterButton cartItem={drawerItem} handleIncrease={handleIncrease} handleDecrese={handleDecrease} />
+                    <CounterButton cartItem={drawerItem} />
                   </div>
                 </section>
               </div>
