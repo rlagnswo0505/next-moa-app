@@ -2,7 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { useAddressStore } from '@/store/adress';
-import useCartStore from '@/store/cart';
+import { useQuery } from '@tanstack/react-query';
+import { getCartItems } from '@/app/(afterLogin)/cart/lib/getCartItems';
 import { ArrowLeft, Bell, ChevronRight, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSelectedLayoutSegment } from 'next/navigation';
@@ -54,7 +55,13 @@ const Header = ({ rightButton = true }) => {
 
   const router = useRouter();
 
-  const { cartItems } = useCartStore((state: any) => state);
+  // userId는 Cart와 동일하게 임시 하드코딩
+  const userId = '00000000-0000-0000-0000-000000000003';
+  const { data: cartItems = [] } = useQuery({
+    queryKey: ['cartItems', userId],
+    queryFn: () => getCartItems({ p_user_id: userId }),
+    staleTime: 60 * 1000,
+  });
 
   const handleBack = () => {
     router.back();

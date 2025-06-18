@@ -7,6 +7,8 @@ import Image from 'next/image';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from '@/components/ui/select';
 import useCartStore from '@/store/cart';
 import CounterButton from '@/app/(afterLogin)/cart/_component/CounterButton';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addToCart } from '@/app/(afterLogin)/cart/lib/cartMutations';
 
 type Props = {
   open: boolean;
@@ -16,7 +18,30 @@ type Props = {
 };
 
 const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props) => {
-  const { addToCart } = useCartStore((state: any) => state);
+  // 실제로는 로그인 유저의 uuid를 받아와야 함
+  const userId = '00000000-0000-0000-0000-000000000003'; // TODO: 실제 유저 id로 교체
+  const queryClient = useQueryClient();
+
+  // supabase rpc로 장바구니 담기
+  const addToCartMutation = useMutation({
+    mutationFn: async () => {
+      if (!drawerItem) throw new Error('상품 정보가 없습니다.');
+      await addToCart({
+        p_user_id: userId,
+        p_deal_id: drawerItem.id || drawerItem.deal_id,
+        p_deal_option_id: drawerItem.selected_option_id || null,
+        p_qty: drawerItem.quantity || 1,
+      });
+      return true;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cartItems', userId] });
+      handleChange(false);
+    },
+    onError: (err: any) => {
+      alert('장바구니 담기에 실패했습니다. ' + (err?.message || ''));
+    },
+  });
 
   const totalOriginalPrice = drawerItem?.originalPrice * drawerItem?.quantity;
 
@@ -24,10 +49,7 @@ const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props)
 
   // 장바구니에 담기
   const handleAddToCart = () => {
-    if (drawerItem) {
-      addToCart(drawerItem);
-      handleChange(false);
-    }
+    addToCartMutation.mutate();
   };
 
   // 개수 증가

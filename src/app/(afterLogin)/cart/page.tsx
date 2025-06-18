@@ -8,18 +8,41 @@ import CartFooter from './_component/CartFooter';
 import PointSection from './_component/PointSection';
 import CartItem from './_component/CartItem';
 import TotalPriceSection from './_component/TotalPriceSection';
-import useCartStore from '@/store/cart';
-import { CartItem as ICartItem } from '@/model/CartItem';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import ConfirmDialog from '@/app/_components/ConfirmDialog';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { getCartItems } from './lib/getCartItems';
+import { removeFromCart, updateCartItemQty } from './lib/cartMutations';
+import useCartCheckStore from '@/store/cart';
 
 const Cart = () => {
-  const { cartItems, removeCheckedItems, removeFromCart } = useCartStore((state: any) => state);
+  // 실제로는 로그인 유저의 uuid를 받아와야 함
+  const userId = '00000000-0000-0000-0000-000000000003'; // TODO: 실제 유저 id로 교체
+  const {
+    data: cartItems,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ['cartItems', userId],
+    queryFn: () => getCartItems({ p_user_id: userId }),
+    staleTime: 60 * 1000,
+  });
+
+  const queryClient = useQueryClient();
+
+  // 단일 삭제 mutation
+  const removeMutation = useMutation({
+    mutationFn: ({ p_cart_item_id }: { p_cart_item_id: number }) => removeFromCart({ p_user_id: userId, p_cart_item_id }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cartItems', userId] });
+    },
+  });
 
   const [isOpen, setIsOpen] = useState(false);
   const [isMulti, setIsMulti] = useState<'multi' | 'single'>('multi');
   const [removeId, setRemoveId] = useState<null | number>(null);
+  const { checkedMap, clearChecked } = useCartCheckStore();
 
   const handleChangeOpen = (e: boolean) => {
     setIsOpen(e);
@@ -43,26 +66,28 @@ const Cart = () => {
   // 확인 버튼 클릭 시 실행되는 함수
   const handleConfirm = () => {
     if (isMulti === 'multi') {
-      removeCheckedItems();
+      // TODO: 여러 개 삭제는 별도 구현 필요 (여러 cart_item_id를 받아서 반복 호출 or 서버에서 일괄 삭제 rpc 필요)
     } else {
-      removeId && removeFromCart(removeId);
+      if (removeId) {
+        removeMutation.mutate({ p_cart_item_id: removeId });
+      }
     }
     setIsOpen(false);
   };
 
   // 총 할인전 금액 cartItem 의 price * quantity
-  const totalOriginalPrice = cartItems.reduce((acc: number, cartItem: ICartItem) => {
-    return acc + cartItem.originalPrice * cartItem.quantity;
+  const totalOriginalPrice = cartItems?.reduce((acc: number, cartItem: any) => {
+    return acc + (cartItem.originalPrice ?? 0) * cartItem.quantity;
   }, 0);
 
   // 총 할인된 금액
-  const totalPrice = cartItems.reduce((acc: number, cartItem: ICartItem) => {
-    return acc + cartItem.price * cartItem.quantity;
+  const totalPrice = cartItems?.reduce((acc: number, cartItem: any) => {
+    return acc + (cartItem.deal_price ?? 0) * cartItem.quantity;
   }, 0);
 
   // 총 할인 금액 cartItem 의 discount * quantity
-  const totalDiscount = cartItems.reduce((acc: number, cartItem: any) => {
-    return acc + (cartItem.originalPrice - cartItem.price) * cartItem.quantity;
+  const totalDiscount = cartItems?.reduce((acc: number, cartItem: any) => {
+    return acc + (cartItem.originalPrice ?? 0 - cartItem.deal_price ?? 0) * cartItem.quantity;
   }, 0);
 
   // 적립금 사용 금액
@@ -90,12 +115,37 @@ const Cart = () => {
   };
 
   // 총 주문 금액
-  const finalPrice = totalPrice - discountPoint;
+  const finalPrice = totalPrice ? totalPrice - discountPoint : 0;
 
   // 보유 포인트에서 사용한 포인트를 뺀 값
   const totalPoint = defaultPoint - discountPoint;
 
-  if (cartItems.length === 0) {
+  // cartItems 변경 시 checkedMap 정합성 보정
+  useEffect(() => {
+    if (!cartItems) return;
+    const cartItemIds = cartItems.map((item: any) => item.cart_item_id);
+    // checkedMap에 cartItems에 없는 id가 있으면 제거
+    const newCheckedMap = Object.fromEntries(cartItemIds.map((id: number) => [id, checkedMap[id] || false]));
+    if (JSON.stringify(newCheckedMap) !== JSON.stringify(checkedMap)) {
+      // checkedMap을 강제로 업데이트
+      clearChecked();
+      // true인 것만 다시 체크
+      Object.entries(newCheckedMap).forEach(([id, checked]) => {
+        if (checked) useCartCheckStore.getState().toggleChecked(Number(id));
+      });
+    }
+  }, [cartItems]);
+
+  // 주문 버튼 클릭 시: checkedMap에서 true인 cart_item_id만 추출
+  const handleOrder = () => {
+    const selectedIds = Object.entries(checkedMap)
+      .filter(([_, checked]) => checked)
+      .map(([id]) => Number(id));
+    // 주문 API에 selectedIds만 넘기면 됨
+    console.log('주문할 cart_item_id:', selectedIds);
+  };
+
+  if (!cartItems || cartItems.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center w-full h-screen gap-4">
         <h1 className="text-2xl font-bold">장바구니가 비어있습니다.</h1>
@@ -107,12 +157,15 @@ const Cart = () => {
     );
   }
 
+  console.log('Cart items:', cartItems);
+
   return (
     <div className="flex flex-col gap-4 bg-gray-200">
       <CartHeader
         handleClickRemoveBtn={() => {
           handleClinkRemoveBtn({ state: 'multi', id: null });
         }}
+        cartItems={cartItems}
       />
       <section className="flex flex-col mt-16">
         <Card className="rounded-sm shadow-none">
@@ -123,15 +176,15 @@ const Cart = () => {
             [&>*:not(:last-child)]:pb-4
             px-0"
           >
-            {cartItems.map((cartItem: ICartItem) => (
-              <CartItem key={cartItem.id} cartItem={cartItem} handleClickRemoveBtn={() => handleClinkRemoveBtn({ state: 'single', id: cartItem.id })} />
+            {cartItems.map((cartItem: any) => (
+              <CartItem key={cartItem.cart_item_id} cartItem={cartItem} handleClickRemoveBtn={() => handleClinkRemoveBtn({ state: 'single', id: cartItem.cart_item_id })} />
             ))}
           </CardContent>
         </Card>
       </section>
       <PointSection totalPoint={totalPoint} discountPoint={discountPoint} defaultPoint={defaultPoint} onChangeDiscountPoint={onChangeDiscountPoint} handleDiscountPointCancel={handleDiscountPointCancel} />
       <TotalPriceSection totalOriginalPrice={totalOriginalPrice} totalDiscount={totalDiscount} discountPoint={discountPoint} finalPrice={finalPrice} />
-      <CartFooter />
+      <CartFooter onOrder={handleOrder} />
       <ConfirmDialog open={isOpen} onOpenChange={handleChangeOpen} onConfirm={handleConfirm} confirmText={'삭제'} title={'상품을 삭제하시겠어요?'} subTitle={''} />
     </div>
   );
