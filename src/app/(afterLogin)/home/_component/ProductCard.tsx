@@ -31,13 +31,16 @@ const ProductCard = ({ coupon, addDrawerItem }: Props) => {
     <Card className="w-full rounded-lg border-none gap-2 py-1 group cursor-pointer" onClick={handleMoveDetail}>
       <CardHeader className="border-b p-1 md:p-2">
         <div className="w-full h-45 relative rounded-lg overflow-hidden">
+          {/* 
+          FIXME: Image 컴포넌트가 next/image로 되어있는데, src가 null일 때 에러 발생
           <Image
-            src={coupon.image}
+            src={coupon.thumbnail_url ?? null}
             alt="이미지"
             fill
             //  group-hover:scale-110
             className="object-cover group-hover:scale-110 transition-transform duration-300 ease-in-out"
-          />
+          /> */}
+          <img src={coupon.thumbnail_url ?? null} alt={coupon.title || '쿠폰 이미지'} className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300 ease-in-out" />
           <Badge className="absolute top-2 left-2 bg-moa">{coupon.remainingTime} 남음</Badge>
           <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-right text-white px-2 py-1">
             <span>

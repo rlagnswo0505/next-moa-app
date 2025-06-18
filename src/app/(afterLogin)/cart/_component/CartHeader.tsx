@@ -2,24 +2,24 @@
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import useCartStore from '@/store/cart';
+import useCartCheckStore from '@/store/cart';
 import React from 'react';
 
 type Props = {
   handleClickRemoveBtn: () => void;
+  cartItems: any[]; // cartItems를 prop으로 받음
 };
 
-const CartHeader = ({ handleClickRemoveBtn }: Props) => {
-  const { cartItems, allToggleChecked } = useCartStore((state: any) => state);
+const CartHeader = ({ handleClickRemoveBtn, cartItems }: Props) => {
+  const { checkedMap, allToggleChecked } = useCartCheckStore();
 
-  // 전체 선택 체크박스
-  const isChecked = cartItems.every((item: any) => item.checked);
+  const cartItemIds = cartItems.map((item) => item.cart_item_id);
+  const checkedCount = cartItemIds.filter((id) => checkedMap[id]).length;
+  const totalCount = cartItemIds.length;
+  const isChecked = totalCount > 0 && checkedCount === totalCount;
 
-  const checkedCount = cartItems.filter((item: any) => item.checked).length;
-  const totalCount = cartItems.length;
-
-  const handleCheckedChange = (e: boolean) => {
-    allToggleChecked(e);
+  const handleCheckedChange = (checked: boolean) => {
+    allToggleChecked(cartItemIds, checked);
   };
 
   // 서치바 현재 스크롤 위치 맨위 벗어나면 shadow 넣기
