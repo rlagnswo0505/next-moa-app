@@ -10,6 +10,8 @@ import CounterButton from '@/app/(afterLogin)/cart/_component/CounterButton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addToCart } from '@/app/(afterLogin)/cart/lib/cartMutations';
 
+const userId = '00000000-0000-0000-0000-000000000003'; // TODO: 실제 유저 id로 교체
+
 type Props = {
   open: boolean;
   handleChange: (e: boolean) => void;
@@ -19,7 +21,6 @@ type Props = {
 
 const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props) => {
   // 실제로는 로그인 유저의 uuid를 받아와야 함
-  const userId = '00000000-0000-0000-0000-000000000003'; // TODO: 실제 유저 id로 교체
   const queryClient = useQueryClient();
 
   // supabase rpc로 장바구니 담기
@@ -116,26 +117,13 @@ const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props)
                     <h4 className="text-xl font-bold">{totalPrice?.toLocaleString()}원</h4>
                   </div>
                   <div>
-                    <CounterButton cartItem={drawerItem} handleIncrease={handleIncrease} handleDecrese={handleDecrease} />
+                    <CounterButton cartItem={drawerItem} handleDecrease={handleDecrease} handleIncrease={handleIncrease} />
                   </div>
                 </section>
               </div>
             </div>
             <DrawerFooter>
-              <div className="flex items-end justify-between w-full gap-2">
-                <div className="flex flex-col gap-1">
-                  <div className="flex justify-center">
-                    <div className="relative bg-primary rounded-full py-1 px-2 max-w-xs   text-sm">
-                      <p className="text-white">추가 할인 5%</p>
-                      {/* 아래쪽 꼬리 */}
-                      <div className="absolute top-full left-6 w-0 h-0 border-l-[8px] border-r-[8px] border-t-[8px] border-l-transparent border-r-transparent border-t-primary"></div>
-                      <div className="absolute top-full left-6 w-0 h-0 border-l-[12px] border-r-[12px] border-t-[12px] border-l-transparent border-r-transparent border-t-gray-200 -z-10 translate-y-px"></div>
-                    </div>
-                  </div>
-                  <Button size={'lg'} className="rounded-full h-12" variant={'outline'}>
-                    친구 초대
-                  </Button>
-                </div>
+              <div className="flex w-full">
                 <Button size={'lg'} className="flex-1 rounded-full h-12" onClick={handleAddToCart}>
                   {totalPrice?.toLocaleString()}원 담기
                 </Button>
