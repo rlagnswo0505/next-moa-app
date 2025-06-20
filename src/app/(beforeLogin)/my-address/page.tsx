@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAddressStore } from '@/store/adress';
 import { Locate, MapPin } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -17,9 +18,11 @@ const MyAdressPage = () => {
   return (
     <div className="p-4">
       <AddressInput />
-      <Button variant={'outline'} size={'lg'} className="w-full mt-12 rounded-full h-14">
-        <Locate />
-        현재 위치로 찾기
+      <Button variant={'outline'} size={'lg'} className="w-full mt-12 rounded-full h-14" asChild>
+        <Link href={'/my-address/map'}>
+          <Locate />
+          현재 위치로 찾기
+        </Link>
       </Button>
       <ul className="mt-4">
         {addresses.map((address) => (
