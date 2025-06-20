@@ -48,7 +48,20 @@ const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props)
 
   const totalPrice = drawerItem?.price * drawerItem?.quantity;
 
-  // 장바구니에 담기
+  // 수량 증가(상태만 변경)
+  const handleIncrease = () => {
+    if (drawerItem && drawerItem.quantity < 10) {
+      setDrawerItem({ ...drawerItem, quantity: drawerItem.quantity + 1 });
+    }
+  };
+  // 수량 감소(상태만 변경)
+  const handleDecrease = () => {
+    if (drawerItem && drawerItem.quantity > 1) {
+      setDrawerItem({ ...drawerItem, quantity: drawerItem.quantity - 1 });
+    }
+  };
+
+  // 장바구니에 담기(이때만 addToCart API 호출)
   const handleAddToCart = () => {
     addToCartMutation.mutate();
   };
