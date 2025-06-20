@@ -1,4 +1,4 @@
-import { createClient } from '@/app/utils/supabase/client';
+import { createClient } from '@/utils/supabase/client';
 
 export const removeFromCart = async ({ p_user_id, p_cart_item_id }: { p_user_id: string; p_cart_item_id: number }) => {
   const supabase = createClient();

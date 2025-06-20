@@ -64,9 +64,15 @@ const Cart = () => {
   };
 
   // 확인 버튼 클릭 시 실행되는 함수
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (isMulti === 'multi') {
-      // TODO: 여러 개 삭제는 별도 구현 필요 (여러 cart_item_id를 받아서 반복 호출 or 서버에서 일괄 삭제 rpc 필요)
+      // checkedMap에서 true인 cart_item_id만 추출
+      const selectedIds = Object.entries(checkedMap)
+        .filter(([_, checked]) => checked)
+        .map(([id]) => Number(id));
+      // 여러 개 삭제: Promise.all로 병렬 삭제
+      await Promise.all(selectedIds.map((cart_item_id) => removeMutation.mutateAsync({ p_cart_item_id: cart_item_id })));
+      clearChecked();
     } else {
       if (removeId) {
         removeMutation.mutate({ p_cart_item_id: removeId });

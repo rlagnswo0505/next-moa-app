@@ -1,4 +1,4 @@
-import { createClient } from '@/app/utils/supabase/client';
+import { createClient } from '@/utils/supabase/client';
 
 export type GetCartItemsParams = {
   p_user_id: string;

@@ -1,4 +1,4 @@
-import { createClient } from '@/app/utils/supabase/client';
+import { createClient } from '@/utils/supabase/client';
 
 type GetDealDetailParams = {
   p_deal_id: number;
