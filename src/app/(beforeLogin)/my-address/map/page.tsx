@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Locate } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import CenterMarker from './_component/CenterMarker';
+import Link from 'next/link';
 
 const MapPage = () => {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -130,8 +131,8 @@ const MapPage = () => {
           </div>
         )}
 
-        <Button size={'lg'} className="rounded-full w-full mt-4" disabled={isGrabbing || !address.roadAddress}>
-          {isGrabbing ? '주소 찾는 중' : '이 위치로 주소 등록'}
+        <Button size={'lg'} className="rounded-full w-full mt-4" disabled={isGrabbing || !address.roadAddress} asChild>
+          <Link href={`/my-address/regist?ra=${address.roadAddress}&ja=${address.jibunAddress}&lat=${center.lat}&lng=${center.lng}`}>{isGrabbing ? '주소 찾는 중' : '이 위치로 주소 등록'}</Link>
         </Button>
       </div>
     </>
