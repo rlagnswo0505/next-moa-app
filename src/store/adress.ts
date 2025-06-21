@@ -14,7 +14,8 @@ import { persist } from 'zustand/middleware';
 interface Address {
   id: string;
   name: string;
-  address: string;
+  roadAddress: string; // 도로명 주소
+  jibunAddress: string; // 지번 주소
   lat: number; // 위도
   lng: number; // 경도
   checked: boolean;

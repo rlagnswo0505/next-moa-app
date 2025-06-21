@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAddressStore } from '@/store/adress';
-import { Locate, MapPin } from 'lucide-react';
+import { Building, House, Locate, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -34,15 +34,13 @@ const MyAdressPage = () => {
               router.push('/home');
             }}
           >
-            <div className="p-1">
-              <MapPin />
-            </div>
+            <div className="p-1">{address.name === '우리집' ? <House /> : address.name === '회사' ? <Building /> : <MapPin />}</div>
             <div className="flex-1 ml-2 flex flex-col">
               <div className="flex items-center gap-2">
                 <span className="font-bold text-lg">{address.name}</span>
                 {address.checked && <Badge className="text-moa bg-moa-foreground/20">현재 설정된 주소</Badge>}
               </div>
-              <span>{address.address}</span>
+              <span>{address.roadAddress}</span>
             </div>
             <Checkbox className="ml-2" checked={address.checked} />
           </li>

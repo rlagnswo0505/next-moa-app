@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Building, House, MapPin } from 'lucide-react';
 import React, { use } from 'react';
+import { useAddressStore } from '@/store/adress';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   searchParams: Promise<{
@@ -16,12 +18,31 @@ type Props = {
 
 const page = ({ searchParams }: Props) => {
   const { ra, ja, lat, lng } = use(searchParams);
-
+  const addAddress = useAddressStore((state) => state.addAddress);
   const [selectedBtn, setSelectedBtn] = React.useState<'house' | 'company' | 'manual' | null>(null);
   const [addressName, setAddressName] = React.useState<string>('');
+  const rounter = useRouter();
 
   const handleButtonClick = (type: 'house' | 'company' | 'manual') => {
     setSelectedBtn(type);
+  };
+
+  const handleRegister = () => {
+    if (!ra || !ja || !lat || !lng || selectedBtn === null || (selectedBtn === 'manual' && !addressName)) return;
+    // 주소명 결정
+    let name = '';
+    if (selectedBtn === 'house') name = '우리집';
+    else if (selectedBtn === 'company') name = '회사';
+    else if (selectedBtn === 'manual') name = addressName;
+    addAddress({
+      name,
+      roadAddress: ra,
+      jibunAddress: ja,
+      lat: Number(lat),
+      lng: Number(lng),
+    });
+    // 등록 후 뒤로가기 또는 알림 등 추가 가능
+    rounter.push('/home');
   };
 
   return (
@@ -46,7 +67,7 @@ const page = ({ searchParams }: Props) => {
         {selectedBtn === 'manual' && <Input className="mt-2 py-6" placeholder="예) 학교, 모아네" value={addressName} onChange={(e) => setAddressName(e.target.value)} autoFocus autoComplete="off" autoCorrect="off" spellCheck="false" type="text" />}
       </section>
       <footer className="fixed bottom-0 left-0 right-0 bg-white p-4 shadow-md z-9999 mx-auto max-w-[600px]">
-        <Button className="w-full rounded-full" size={'lg'} disabled={!ra || !ja || !lat || !lng || selectedBtn === null || (selectedBtn === 'manual' && !addressName)}>
+        <Button className="w-full rounded-full" size={'lg'} disabled={!ra || !ja || !lat || !lng || selectedBtn === null || (selectedBtn === 'manual' && !addressName)} onClick={handleRegister}>
           주소 등록
         </Button>
       </footer>
