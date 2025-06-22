@@ -7,6 +7,10 @@ import Image from 'next/image';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from '@/components/ui/select';
 import useCartStore from '@/store/cart';
 import CounterButton from '@/app/(afterLogin)/cart/_component/CounterButton';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addToCart } from '@/app/(afterLogin)/cart/lib/cartMutations';
+
+const userId = '00000000-0000-0000-0000-000000000003'; // TODO: 실제 유저 id로 교체
 
 type Props = {
   open: boolean;
@@ -16,32 +20,50 @@ type Props = {
 };
 
 const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props) => {
-  const { addToCart } = useCartStore((state: any) => state);
+  // 실제로는 로그인 유저의 uuid를 받아와야 함
+  const queryClient = useQueryClient();
+
+  // supabase rpc로 장바구니 담기
+  const addToCartMutation = useMutation({
+    mutationFn: async () => {
+      if (!drawerItem) throw new Error('상품 정보가 없습니다.');
+      await addToCart({
+        p_user_id: userId,
+        p_deal_id: drawerItem.id || drawerItem.deal_id,
+        p_deal_option_id: drawerItem.selected_option_id || null,
+        p_qty: drawerItem.quantity || 1,
+      });
+      return true;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cartItems', userId] });
+      handleChange(false);
+    },
+    onError: (err: any) => {
+      alert('장바구니 담기에 실패했습니다. ' + (err?.message || ''));
+    },
+  });
 
   const totalOriginalPrice = drawerItem?.originalPrice * drawerItem?.quantity;
 
   const totalPrice = drawerItem?.price * drawerItem?.quantity;
 
-  // 장바구니에 담기
-  const handleAddToCart = () => {
-    if (drawerItem) {
-      addToCart(drawerItem);
-      handleChange(false);
-    }
-  };
-
-  // 개수 증가
+  // 수량 증가(상태만 변경)
   const handleIncrease = () => {
-    if (drawerItem) {
+    if (drawerItem && drawerItem.quantity < 10) {
       setDrawerItem({ ...drawerItem, quantity: drawerItem.quantity + 1 });
     }
   };
-
-  // 개수 감소
+  // 수량 감소(상태만 변경)
   const handleDecrease = () => {
     if (drawerItem && drawerItem.quantity > 1) {
       setDrawerItem({ ...drawerItem, quantity: drawerItem.quantity - 1 });
     }
+  };
+
+  // 장바구니에 담기(이때만 addToCart API 호출)
+  const handleAddToCart = () => {
+    addToCartMutation.mutate();
   };
 
   useEffect(() => {
@@ -94,26 +116,13 @@ const AddCartDrawer = ({ open, handleChange, drawerItem, setDrawerItem }: Props)
                     <h4 className="text-xl font-bold">{totalPrice?.toLocaleString()}원</h4>
                   </div>
                   <div>
-                    <CounterButton cartItem={drawerItem} handleIncrease={handleIncrease} handleDecrese={handleDecrease} />
+                    <CounterButton cartItem={drawerItem} handleDecrease={handleDecrease} handleIncrease={handleIncrease} />
                   </div>
                 </section>
               </div>
             </div>
             <DrawerFooter>
-              <div className="flex items-end justify-between w-full gap-2">
-                <div className="flex flex-col gap-1">
-                  <div className="flex justify-center">
-                    <div className="relative bg-primary rounded-full py-1 px-2 max-w-xs   text-sm">
-                      <p className="text-white">추가 할인 5%</p>
-                      {/* 아래쪽 꼬리 */}
-                      <div className="absolute top-full left-6 w-0 h-0 border-l-[8px] border-r-[8px] border-t-[8px] border-l-transparent border-r-transparent border-t-primary"></div>
-                      <div className="absolute top-full left-6 w-0 h-0 border-l-[12px] border-r-[12px] border-t-[12px] border-l-transparent border-r-transparent border-t-gray-200 -z-10 translate-y-px"></div>
-                    </div>
-                  </div>
-                  <Button size={'lg'} className="rounded-full h-12" variant={'outline'}>
-                    친구 초대
-                  </Button>
-                </div>
+              <div className="flex w-full">
                 <Button size={'lg'} className="flex-1 rounded-full h-12" onClick={handleAddToCart}>
                   {totalPrice?.toLocaleString()}원 담기
                 </Button>
