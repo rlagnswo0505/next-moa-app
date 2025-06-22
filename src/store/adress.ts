@@ -9,6 +9,7 @@ import { persist } from 'zustand/middleware';
   - 주소 목록은 로컬 스토리지에 저장되어 페이지 새로고침 시에도 유지됨
   - 주소 목록은 최대 10개까지만 저장 가능
   - 현재 설정된 주소는 한개만 가능 checked 속성으로 관리
+  - updateAddress로 name(이름)만 단독 수정도 가능
  */
 
 interface Address {
