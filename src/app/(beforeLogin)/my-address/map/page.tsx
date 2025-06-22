@@ -19,7 +19,7 @@ const MapPage = () => {
   useEffect(() => {
     if (!window.naver || !window.naver.maps || !mapRef.current) return;
     const naver = window.naver;
-    if (mapInstance.current) return; // 이미 생성된 경우 재생성 방지
+    if (mapInstance.current) return;
 
     mapInstance.current = new naver.maps.Map(mapRef.current, {
       center: new naver.maps.LatLng(center.lat, center.lng),
@@ -27,7 +27,7 @@ const MapPage = () => {
       zoomControl: true,
       zoomControlOptions: { style: naver.maps.ZoomControlStyle.SMALL, position: naver.maps.Position.TOP_RIGHT },
     });
-    // 이벤트 등록
+
     naver.maps.Event.addListener(mapInstance.current, 'dragstart', function () {
       setIsGrabbing(true);
     });
@@ -35,23 +35,12 @@ const MapPage = () => {
       setIsGrabbing(false);
       const c = mapInstance.current.getCenter();
       setCenter({ lat: c.lat(), lng: c.lng() });
-      getAddressFromLatLng(c.lat(), c.lng());
+      // 여기서 주소 갱신은 center 변경에 의해 useEffect로 처리됨
     });
-    // 최초 주소 조회
-    getAddressFromLatLng(center.lat, center.lng);
-    // eslint-disable-next-line
-  }, []); // 빈 배열로 최초 1회만 실행
 
-  // center 변경 시 지도 중심 이동
-  useEffect(() => {
-    if (!window.naver || !window.naver.maps || !mapInstance.current) return;
-    const naver = window.naver;
-    const latlng = new naver.maps.LatLng(center.lat, center.lng);
-    mapInstance.current.setCenter(latlng);
-    // center가 바뀌면 주소도 갱신
+    // 최초 지도 생성 후 주소 갱신
     getAddressFromLatLng(center.lat, center.lng);
-    // eslint-disable-next-line
-  }, [center]);
+  }, []);
 
   // 페이지 진입 시 현재 위치로 이동
   useEffect(() => {
@@ -60,6 +49,8 @@ const MapPage = () => {
       (pos) => {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
+        console.log('현재 위치:', pos);
+
         setCenter({ lat, lng });
       },
       () => {
@@ -68,6 +59,21 @@ const MapPage = () => {
     );
     // eslint-disable-next-line
   }, []);
+
+  // center 변경 시 지도 중심 이동 및 주소 갱신
+  useEffect(() => {
+    if (!window.naver || !window.naver.maps || !mapInstance.current) return;
+    // 초기값이면 return
+    if (center.lat === 37.5665 && center.lng === 126.978) return;
+    const naver = window.naver;
+    const latlng = new naver.maps.LatLng(center.lat, center.lng);
+    mapInstance.current.setCenter(latlng);
+    console.log('지도 중심 변경:', center);
+
+    setTimeout(() => {
+      getAddressFromLatLng(center.lat, center.lng);
+    }, 500);
+  }, [center]);
 
   // 좌표로 주소 변환
   const getAddressFromLatLng = (lat: number, lng: number) => {

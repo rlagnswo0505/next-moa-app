@@ -20,7 +20,7 @@ const page = ({ searchParams }: Props) => {
   const { ra, ja, lat, lng } = use(searchParams);
   const addAddress = useAddressStore((state) => state.addAddress);
   const [selectedBtn, setSelectedBtn] = React.useState<'house' | 'company' | 'manual' | null>(null);
-  const [addressName, setAddressName] = React.useState<string>('');
+  const [addressName, setAddressName] = React.useState<string>(ra);
   const rounter = useRouter();
 
   const handleButtonClick = (type: 'house' | 'company' | 'manual') => {
