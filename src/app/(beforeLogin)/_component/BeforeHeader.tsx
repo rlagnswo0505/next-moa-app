@@ -25,6 +25,8 @@ const BeforeHeader = () => {
     title = '주소 편집';
   }
 
+  if (!segments[0]) return null;
+
   return (
     <>
       <div className="h-11 w-full"></div>
