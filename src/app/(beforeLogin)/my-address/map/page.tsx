@@ -4,8 +4,10 @@ import { Locate } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import CenterMarker from './_component/CenterMarker';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const MapPage = () => {
+  const router = useRouter();
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null); // naver.maps.Map 인스턴스 저장
   const [address, setAddress] = useState<{ roadAddress: string; jibunAddress: string }>({
@@ -14,6 +16,7 @@ const MapPage = () => {
   });
   const [center, setCenter] = useState<{ lat: number; lng: number }>({ lat: 37.5665, lng: 126.978 });
   const [isGrabbing, setIsGrabbing] = useState(false);
+  const [isAddressLoading, setIsAddressLoading] = useState(false);
 
   // 지도 최초 1회 생성 및 이벤트 등록
   useEffect(() => {
@@ -63,13 +66,11 @@ const MapPage = () => {
   // center 변경 시 지도 중심 이동 및 주소 갱신
   useEffect(() => {
     if (!window.naver || !window.naver.maps || !mapInstance.current) return;
-    // 초기값이면 return
     if (center.lat === 37.5665 && center.lng === 126.978) return;
     const naver = window.naver;
     const latlng = new naver.maps.LatLng(center.lat, center.lng);
     mapInstance.current.setCenter(latlng);
-    console.log('지도 중심 변경:', center);
-
+    setIsAddressLoading(true); // 주소 변환 시작
     setTimeout(() => {
       getAddressFromLatLng(center.lat, center.lng);
     }, 500);
@@ -84,6 +85,7 @@ const MapPage = () => {
         orders: 'roadaddr,addr',
       },
       (status: any, response: any) => {
+        setIsAddressLoading(false); // 변환 완료 시
         if (status === window.naver.maps.Service.Status.OK) {
           const result = response.v2.address;
           setAddress({
@@ -114,6 +116,15 @@ const MapPage = () => {
     );
   };
 
+  // 주소 등록 페이지로 이동
+  const handleRegisterAddress = () => {
+    if (!address.roadAddress || !address.jibunAddress) {
+      alert('주소를 찾을 수 없습니다. 다시 시도해주세요.');
+      return;
+    }
+    router.push(`/my-address/regist?ra=${encodeURIComponent(address.roadAddress)}&ja=${encodeURIComponent(address.jibunAddress)}&lat=${center.lat}&lng=${center.lng}`);
+  };
+
   return (
     <>
       <div id="map" ref={mapRef} className="w-full h-[80dvh] relative">
@@ -137,8 +148,8 @@ const MapPage = () => {
           </div>
         )}
 
-        <Button size={'lg'} className="rounded-full w-full mt-4" disabled={isGrabbing || !address.roadAddress} asChild>
-          <Link href={`/my-address/regist?ra=${address.roadAddress}&ja=${address.jibunAddress}&lat=${center.lat}&lng=${center.lng}`}>{isGrabbing ? '주소 찾는 중' : '이 위치로 주소 등록'}</Link>
+        <Button size={'lg'} className="rounded-full w-full mt-4" disabled={isGrabbing || isAddressLoading || !address.roadAddress} onClick={handleRegisterAddress}>
+          {isGrabbing || isAddressLoading ? '주소 찾는 중' : '이 위치로 주소 등록'}
         </Button>
       </div>
     </>
